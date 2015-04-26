@@ -7,6 +7,8 @@ Description
 
 This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` that generates an `html` site comparing two directory trees where files that differ contain links to their line-by-line comparisons. 
 
+[Website](http://tmthydvnprt.github.io/juxtapy)
+
 ### Features
 * ignore specific files
 * filter out file types
@@ -62,7 +64,7 @@ class Juxta(__builtin__.object)
 
 Tests
 -----
-Tests are located in `tests/`
+Tests are located in `tests/`.  Example output located [here](http://tmthydvnprt.github.io/juxtapy/from_compare_to/index.html).
 
 Todo
 ----
