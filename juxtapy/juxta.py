@@ -84,7 +84,7 @@ def get_file_diffs(from_file_path, to_file_path):
 class Juxta(object):
     """compare folder and files by juxtaposing from (left) and to (right) directories"""
 
-    def __init__(self, from_path='', to_path='', output_path='', file_filter=None, ignores=None)
+    def __init__(self, from_path='', to_path='', output_path='', file_filter=None, ignores=None):
         """create Juxta Object"""
         
         # set inputs

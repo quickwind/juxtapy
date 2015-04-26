@@ -2,4 +2,4 @@
 juxtpy nose tests
 """
 
-__all__ = ['test1', 'test2']
+__all__ = ['test1']
