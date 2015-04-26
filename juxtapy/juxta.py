@@ -17,7 +17,7 @@ HTML_STR = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <head>
     <meta http-equiv="Content-Type"
           content="text/html; charset=ISO-8859-1" />
-    <title></title>
+    <title>{title}</title>
     <style type="text/css">
         table.diff {{font-family:Courier; border:medium;}}
         .diff_header {{background-color:#e0e0e0}}
@@ -75,6 +75,10 @@ def write_file(file_path='', data=''):
     fid.write(data)
     fid.close()
 
+def common_root(left='', right=''):
+    """find common root between two file paths"""
+    return os.path.sep.join([l for l, r in zip(left.split(os.path.sep), right.split(os.path.sep)) if l == r])
+
 class Juxta(object):
     """compare folder and files by juxtaposing from (left) and to (right) directories"""
 
@@ -125,10 +129,11 @@ class Juxta(object):
             compare = self.compare_dir(self.dircmp(self.from_path, self.to_path))
             compare = sorted(compare, key=lambda x: x["from"] or x["to"])
             file_rows = [ROW_STR.format(**x) for x in compare]
-            print file_rows
+            root = os.path.dirname(common_root(self.from_path, self.to_path))
             compare_html = HTML_STR.format(**{
-                'from' : self.from_path,
-                'to' : self.to_path,
+                'title' : self.compare_name,
+                'from' : self.from_path.replace(root, ''),
+                'to' : self.to_path.replace(root, ''),
                 'rows' :'\n'.join(file_rows)
             })
             # write
@@ -147,6 +152,26 @@ class Juxta(object):
         else:
             return 'ERROR: from and to patch are not compatible'
 
+    def write_comparison(self, name, dcmp):
+        """compare and write files"""
+        # paths
+        from_file_path = os.path.join(dcmp.left, name)
+        to_file_path = os.path.join(dcmp.right, name)
+        compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name) + '.html'
+        # compare
+        file_compare_html = self.file_compare(from_file_path, to_file_path)
+        # write
+        if not os.path.exists(os.path.dirname(compare_file_path)):
+            os.makedirs(os.path.dirname(compare_file_path))
+        write_file(compare_file_path, file_compare_html)
+
+        diff = {
+            'type'   : '',
+            'from'   : os.path.join(dcmp.left, name).replace(self.from_path+os.path.sep, ''),
+            'to'     : os.path.join(dcmp.right, name).replace(self.to_path+os.path.sep, ''),
+            'compare': compare_file_path.replace(self.output_path+os.path.sep, '')
+        }
+        return diff
 
     def compare_dir(self, dcmp):
         """recursive directory and file compare"""
@@ -156,32 +181,12 @@ class Juxta(object):
         # show same files
         for name in dcmp.same_files:
             if not fnmatch.fnmatch(name, self.file_filter):
-                diffs.append({
-                    'type'   : '',
-                    'from'   : os.path.join(dcmp.left, name).replace(self.from_path, ''),
-                    'to'     : os.path.join(dcmp.right, name).replace(self.to_path, ''),
-                    'compare': ''
-                })
+                diffs.append(self.write_comparison(name, dcmp))
 
         # compare different files
         for name in dcmp.diff_files:
             if not fnmatch.fnmatch(name, self.file_filter):
-                # paths
-                from_file_path = os.path.join(dcmp.left, name)
-                to_file_path = os.path.join(dcmp.right, name)
-                compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name) + '.html'
-                # compare
-                file_compare_html = self.file_compare(from_file_path, to_file_path)
-                diffs.append({
-                    'type'   : 'diff_chg',
-                    'from'   : from_file_path.replace(self.from_path, ''),
-                    'to'     : to_file_path.replace(self.to_path, ''),
-                    'compare': compare_file_path
-                })
-                # write
-                if not os.path.exists(os.path.dirname(compare_file_path)):
-                    os.makedirs(os.path.dirname(compare_file_path))
-                write_file(compare_file_path, file_compare_html)
+                diffs.append(self.write_comparison(name, dcmp))
 
         # compare common subdirectories
         for sub_dcmp in dcmp.subdirs.values():
@@ -211,9 +216,9 @@ class Juxta(object):
             file_compare_html = self.file_compare(from_file_path, to_file_path)
             diffs.append({
                 'type'   : 'diff_chg',
-                'from'   : from_file_path.replace(self.from_path, ''),
-                'to'     : to_file_path.replace(self.to_path, ''),
-                'compare': compare_file_path
+                'from'   : from_file_path.replace(self.from_path+os.path.sep, ''),
+                'to'     : to_file_path.replace(self.to_path+os.path.sep, ''),
+                'compare': compare_file_path.replace(self.output_path+os.path.sep, '')
             })
             # write
             write_file(compare_file_path, file_compare_html)
@@ -223,7 +228,7 @@ class Juxta(object):
             if not fnmatch.fnmatch(no_match, self.file_filter):
                 diffs.append({
                     'type'   : 'diff_sub',
-                    'from'   : os.path.join(dcmp.left, no_match).replace(self.from_path, ''),
+                    'from'   : os.path.join(dcmp.left, no_match).replace(self.from_path+os.path.sep, ''),
                     'to'     : '',
                     'compare': ''
                 })
@@ -232,7 +237,7 @@ class Juxta(object):
                 diffs.append({
                     'type'   : 'diff_add',
                     'from'   : '',
-                    'to'     : os.path.join(dcmp.right, no_match).replace(self.to_path, ''),
+                    'to'     : os.path.join(dcmp.right, no_match).replace(self.to_path+os.path.sep, ''),
                     'compare': ''
                 })
 
