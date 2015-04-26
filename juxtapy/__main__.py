@@ -1,6 +1,7 @@
 """
 Juxtapy
-Folder and File Comparison
+
+Folder and File juxtaposing in Python
 
 """
 

@@ -1,0 +1,5 @@
+common_file.txt
+
+This file is commone to both the from and to directories
+
+*almost common*

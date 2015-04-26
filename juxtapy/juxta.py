@@ -19,13 +19,13 @@ HTML_STR = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           content="text/html; charset=ISO-8859-1" />
     <title></title>
     <style type="text/css">
-        table.diff {font-family:Courier; border:medium;}
-        .diff_header {background-color:#e0e0e0}
-        td.diff_header {text-align:right}
-        .diff_next {background-color:#c0c0c0}
-        .diff_add {background-color:#aaffaa}
-        .diff_chg {background-color:#ffff77}
-        .diff_sub {background-color:#ffaaaa}
+        table.diff {{font-family:Courier; border:medium;}}
+        .diff_header {{background-color:#e0e0e0}}
+        td.diff_header {{text-align:right}}
+        .diff_next {{background-color:#c0c0c0}}
+        .diff_add {{background-color:#aaffaa}}
+        .diff_chg {{background-color:#ffff77}}
+        .diff_sub {{background-color:#ffaaaa}}
     </style>
 </head>
 <body>
@@ -62,12 +62,11 @@ def list_diff(list1, list2):
 
 def read_file(file_path='', encoding='utf-8'):
     """read a file into a string. assumes utf-8 encoding."""
+    source = ''
     if os.path.exists(file_path):
         fid = codecs.open(file_path, mode='r', encoding=encoding)
         source = fid.read()
         fid.close()
-    else:
-        source = ''
     return source
 
 def write_file(file_path='', data=''):
@@ -121,6 +120,7 @@ class Juxta(object):
             compare = self.get_dir_diffs(filecmp.dircmp(self.from_path, self.to_path, self.file_ignore))
             compare = sorted(compare, key=lambda x: x["from"] or x["to"])
             file_rows = [ROW_STR.format(**x) for x in compare]
+            print file_rows
             compare_html = HTML_STR.format(**{
                 'from' : self.from_path,
                 'to' : self.to_path,
@@ -135,8 +135,6 @@ class Juxta(object):
             # compare file
             file_compare_html = get_file_diffs(self.from_path, self.to_path)
             # write
-            if not os.path.exists(os.path.dirname(self.output_path)):
-                os.makedirs(os.path.dirname(self.output_path))
             write_file(self.output_path, file_compare_html)
 
             return 'COMPARED: {}'.format(self.output_path)
@@ -203,7 +201,7 @@ class Juxta(object):
         # compare close file matches
         for from_file_path, to_file_path in close_files:
             # paths
-            compare_file_path = os.path.join(self.output_path, from_file_path.replace(self.from_path, ''), name) + '.html'
+            compare_file_path = from_file_path.replace(self.from_path, self.output_path) + '.html'
             # compare
             file_compare_html = get_file_diffs(from_file_path, to_file_path)
             diffs.append({

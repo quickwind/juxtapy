@@ -1,5 +1,5 @@
 """
-juxtpy nose tests
+juxtapy nose tests
 """
 
-__all__ = ['test1']
+__all__ = ['test']
