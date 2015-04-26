@@ -34,7 +34,7 @@ HTML_STR = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
         <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
         <thead>
-            <tr><td>{from} (From)</td><td>{to} (To)</td></tr>
+            <tr><th class="diff_header">{from}</th><th class="diff_header">{to}</th></tr>
         </thead>
         <tbody>
         {rows}
@@ -124,7 +124,7 @@ class Juxta(object):
         """ndiff file compare"""
         from_file = read_file(from_file_path).splitlines()
         to_file = read_file(to_file_path).splitlines()
-        file_diff_html = difflib.HtmlDiff().make_file(from_file, to_file)
+        file_diff_html = difflib.HtmlDiff().make_file(from_file, to_file, os.path.basename(from_file_path),  os.path.basename(to_file_path))
         return file_diff_html
 
     def compare(self):
