@@ -34,7 +34,7 @@ HTML_STR = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
         <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
         <thead>
-            <tr><td><a href="{from}">{from} (From)</a></td><td><a href="{to}">{to} (To)</a></td></tr>
+            <tr><td>{from} (From)</td><td>{to} (To)</td></tr>
         </thead>
         <tbody>
         {rows}
@@ -53,7 +53,7 @@ HTML_STR = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 </body>
 </html>'''
 
-ROW_STR = '<tr><td class="{type}"><a href="{compare}">{from}</a></td><td class="{type}"><a href="{compare}">{to}</a></td></tr>'
+ROW_STR = '<tr><td class="{type}"><a href="{compare}" target="_blank">{from}</a></td><td class="{type}"><a href="{compare}" target="_blank">{to}</a></td></tr>'
 
 # helper functions
 def list_diff(list1, list2):
