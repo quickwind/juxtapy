@@ -68,13 +68,8 @@ def main(lineargs):
 
     # do comparison
     jxt = Juxta(args.from_path, args.to_path, args.output_path, args.file_filter, args.file_ignore)
-    print jxt.from_path
-    print jxt.to_path
-    print jxt.compare_name
-    print jxt.compare_type
-    print jxt.file_filter
-    print jxt.file_ignore
-    print jxt.output_path
+    response = jxt.compare()
+    print response
 
 if __name__ == "__main__":
     main(sys.argv[1:])
