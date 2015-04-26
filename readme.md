@@ -1,9 +1,9 @@
 Juxtapy
 =======
+Folder and File juxtaposing in Python
 
 Description
 -----------
-Folder and File juxtaposing in Python
 
 This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` that generates an `html` site comparing two directory trees where files that differ contain links to their line-by-line comparisons. 
 
