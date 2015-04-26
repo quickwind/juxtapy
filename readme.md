@@ -66,10 +66,10 @@ Tests are located in `tests/`
 
 Todo
 ----
-[x] File comparison
-[x] Directory comparison
-[ ] Make the `html` more modern
-[ ] Nest Directory Tree
+* [x] File comparison
+* [x] Directory comparison
+* [ ] Make the `html` more modern
+* [ ] Nest Directory Tree
 
 License
 -------
