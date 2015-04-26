@@ -75,4 +75,4 @@ Todo
 
 License
 -------
-[MIT]()
+[MIT](https://github.com/tmthydvnprt/juxtapy/blob/master/LICENSE)
