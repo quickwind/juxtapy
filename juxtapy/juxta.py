@@ -4,7 +4,9 @@ juxta.py
 """
 
 import os
+import codecs
 import shutil
+import fnmatch
 import filecmp
 import difflib
 
@@ -84,16 +86,16 @@ def get_file_diffs(from_file_path, to_file_path):
 class Juxta(object):
     """compare folder and files by juxtaposing from (left) and to (right) directories"""
 
-    def __init__(self, from_path='', to_path='', output_path='', file_filter=None, ignores=None):
+    def __init__(self, from_path='', to_path='', output_path='', file_filter=None, file_ignore=None):
         """create Juxta Object"""
-        
+
         # set inputs
         self.file_filter = file_filter if file_filter else '*.pyc'
-        self.ignores = ignores if ignores else ['.DS_Store', '.localized']
+        self.file_ignore = file_ignore if file_ignore else ['.DS_Store', '.localized']
         self.from_path = from_path
         self.to_path = to_path
-        self.compare_name = '{}_compare_{}'.format(os.path.basename(from_path), os.path.basename(to_path))    
-        
+        self.compare_name = '{}_compare_{}'.format(os.path.basename(from_path), os.path.basename(to_path))
+
         # check for comparison type
         if os.path.isdir(from_path) and os.path.isdir(to_path):
             self.compare_type = 'dir'
@@ -106,51 +108,51 @@ class Juxta(object):
         self.output_path = os.path.join(output_path, self.compare_name)
         if self.compare_type == 'file':
             self.output_path += '.html'
-        
+
     def compare(self):
         """compare folders and/or files"""
-        
+
         if self.compare_type == 'dir':
             # check and clear output directory
             if os.path.exists(self.output_path):
                 shutil.rmtree(self.output_path)
             os.makedirs(self.output_path)
             # compare directory
-            compare = self.get_dir_diffs(filecmp.dircmp(self.from_path, self.to_path, self.ignores))
-            compare = sorted(cmpr, key=lambda x: x["left"] or x["right"])
+            compare = self.get_dir_diffs(filecmp.dircmp(self.from_path, self.to_path, self.file_ignore))
+            compare = sorted(compare, key=lambda x: x["from"] or x["to"])
             file_rows = [ROW_STR.format(**x) for x in compare]
             compare_html = HTML_STR.format(**{
-                'from' : self.from_path, 
-                'to' : self.to_path, 
+                'from' : self.from_path,
+                'to' : self.to_path,
                 'rows' :'\n'.join(file_rows)
             })
-            # write 
-            write_file(os.path.join(self.output_path, 'index.html'), )
-            
+            # write
+            write_file(os.path.join(self.output_path, 'index.html'), compare_html)
+
             return 'COMPARED: {}'.format(self.output_path)
-            
+
         elif self.compare_type == 'file':
             # compare file
-            file_compare_html = self.get_file_diffs(self.from_path, self.to_path)
+            file_compare_html = get_file_diffs(self.from_path, self.to_path)
             # write
             if not os.path.exists(os.path.dirname(self.output_path)):
                 os.makedirs(os.path.dirname(self.output_path))
             write_file(self.output_path, file_compare_html)
-            
+
             return 'COMPARED: {}'.format(self.output_path)
-            
+
         else:
             return 'ERROR: from and to patch are not compatible'
 
-    
+
     def get_dir_diffs(self, dcmp):
         """recursive directory and file compare"""
-        
+
         diffs = []
 
         # show same files
         for name in dcmp.same_files:
-            if not fnmatch.fnmatch(name, self.file_filters):
+            if not fnmatch.fnmatch(name, self.file_filter):
                 diffs.append({
                     'type'   : '',
                     'from'   : os.path.join(dcmp.left, name).replace(self.from_path, ''),
@@ -160,13 +162,13 @@ class Juxta(object):
 
         # compare different files
         for name in dcmp.diff_files:
-            if not fnmatch.fnmatch(name, self.file_filters):    
+            if not fnmatch.fnmatch(name, self.file_filter):
                 # paths
                 from_file_path = os.path.join(dcmp.left, name)
-                to_file_path = os.path.join(dcmp.right, name)    
-                compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name) + '.html'  
+                to_file_path = os.path.join(dcmp.right, name)
+                compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name) + '.html'
                 # compare
-                file_compare_html = self.get_file_diffs(from_file_path, to_file_path)
+                file_compare_html = get_file_diffs(from_file_path, to_file_path)
                 diffs.append({
                     'type'   : 'diff_chg',
                     'from'   : from_file_path.replace(self.from_path, ''),
@@ -180,30 +182,30 @@ class Juxta(object):
 
         # compare common subdirectories
         for sub_dcmp in dcmp.subdirs.values():
-            diffs.extend(self.get_dir_diffs(sub_dcmp, dcmp.left))
+            diffs.extend(self.get_dir_diffs(sub_dcmp))
 
         # check for close file and subdirectory matches
         close_dirs = []
         close_files = []
         for left in dcmp.left_only:
-            match = get_close_matches(left, dcmp.right_only, 1)
+            match = difflib.get_close_matches(left, dcmp.right_only, 1)
             if match:
                 close_paths = (os.path.join(dcmp.left, left), os.path.join(dcmp.right, match[0]))
-                if all([path.isdir(x) for x in close_paths]):
+                if all([os.path.isdir(x) for x in close_paths]):
                     close_dirs.append(close_paths)
                 else:
                     close_files.append(close_paths)
 
         # compare close subdirectory matches
-        for left_dir, right_dir in close_dirs:
-            diffs.extend(self.get_dir_diffs(dircmp(left_dir, right_dir, self.ignores), left_dir))
+        for from_dir, to_dir in close_dirs:
+            diffs.extend(self.get_dir_diffs(filecmp.dircmp(from_dir, to_dir, self.file_ignore)))
 
         # compare close file matches
         for from_file_path, to_file_path in close_files:
             # paths
-            compare_file_path = os.path.join(output_path, from_file_path.replace(self.from_path,''), name) + '.html'     
+            compare_file_path = os.path.join(self.output_path, from_file_path.replace(self.from_path, ''), name) + '.html'
             # compare
-            file_compare_html = self.get_file_diffs(left_file, right_file)
+            file_compare_html = get_file_diffs(from_file_path, to_file_path)
             diffs.append({
                 'type'   : 'diff_chg',
                 'from'   : from_file_path.replace(self.from_path, ''),
@@ -214,16 +216,16 @@ class Juxta(object):
             write_file(compare_file_path, file_compare_html)
 
         # add no match files and directories to diffs
-        for no_match in list_diff(dcmp.left_only, [path.basename(x[0]) for x in close_files+close_dirs]):
-            if not fnmatch.fnmatch(no_match, self.file_filters):   
+        for no_match in list_diff(dcmp.left_only, [os.path.basename(x[0]) for x in close_files+close_dirs]):
+            if not fnmatch.fnmatch(no_match, self.file_filter):
                 diffs.append({
                     'type'   : 'diff_sub',
                     'from'   : os.path.join(dcmp.left, no_match).replace(self.from_path, ''),
                     'to'     : '',
                     'compare': ''
                 })
-        for no_match in list_diff(dcmp.right_only, [path.basename(x[1]) for x in close_files+close_dirs]):
-            if not fnmatch.fnmatch(no_match, self.file_filters):   
+        for no_match in list_diff(dcmp.right_only, [os.path.basename(x[1]) for x in close_files+close_dirs]):
+            if not fnmatch.fnmatch(no_match, self.file_filter):
                 diffs.append({
                     'type'   : 'diff_add',
                     'from'   : '',
