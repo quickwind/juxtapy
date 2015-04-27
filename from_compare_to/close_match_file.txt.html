@@ -21,6 +21,29 @@
         padding-top: 50px;
         margin-bottom: 60px;
     }
+    .navbar-header {
+        float:left!important;
+        margin-right: 0!important;
+        margin-left: 0!important;
+    }
+    .navbar-brand {
+        margin-left:0px!important;
+    }
+    .navbar-nav.navbar-left {
+        float: left!important;
+        margin: 0;
+    }
+    .navbar-nav.navbar-right {
+        float: right!important;
+        margin: 0;
+    }
+    .navbar-nav>li {
+        float:left!important;
+    }
+    .navbar-nav>li>a {
+        padding-top: 12px!important;
+        padding-bottom: 12px!important;
+    }
     .footer {
         position: fixed;
         bottom: 0;
@@ -36,9 +59,19 @@
         padding-right: 15px;
         padding-left: 15px;
     }
+    .breadcrumb {
+        margin-bottom: 8px;
+        margin-left:48px;
+        text-transform: none;
+    }
+    .leftbreadcrumb {
+        padding-right:0px;
+    }
+    .rightbreadcrumb {
+        padding-left:0px;
+    }
     table.diff {
         font-size:100%;
-        margin-top:20px;
         font-family: 'Ubuntu Mono'!important;
         border: 1px solid #5cb85c;
     }
@@ -47,13 +80,16 @@
         border-left: 0px!important;
         border-right: 0px!important;
     }
+    td[nowrap="nowrap"] {
+        width:48%;
+    }
     .diff td {
         padding:3px 6px!important;
         border-color:#f5f5f5!important;
     }
     .diff_next,
     .diff_header {
-        width:6px;
+        width:1%;
         background-color:#EBEBEB;
         border-top: 0px!important;
         border-color: #EBEBEB!important;
@@ -70,6 +106,16 @@
     }
     .diff_sub {
         background-color:rgba(217, 83, 79, 0.5);
+    }
+    .legend {
+        font-size:80%;
+        margin-top:0px;
+    }
+    @media (min-width: 768px ) {
+        .legend {
+            font-size:100%;
+            margin-top:0px;
+        }
     }
 
         </style>
@@ -91,8 +137,37 @@
         </nav>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-10 col-sm-offset-1 main">
-                    
+                <div class="col-xs-6 leftbreadcrumb">
+                    <ol class="breadcrumb">
+                        <li class=""></li>
+<li class="">Users</li>
+<li class="">timothydavenport</li>
+<li class="">GitHub</li>
+<li class="">juxtapy</li>
+<li class="">tests</li>
+<li class="">inputs</li>
+<li class="">from</li>
+<li class="active">close_match_file.txt</li>
+                    </ol>
+                </div>
+                <div class="col-xs-6 rightbreadcrumb">
+                    <ol class="breadcrumb">
+                        <li class=""></li>
+<li class="">Users</li>
+<li class="">timothydavenport</li>
+<li class="">GitHub</li>
+<li class="">juxtapy</li>
+<li class="">tests</li>
+<li class="">inputs</li>
+<li class="">to</li>
+<li class="active">close_mathc_file_.txt</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        
 <table id="difflib_chg_to6__top" class="diff table table-hover table-condensed">
     <thead>
         <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">close_match_file.txt</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">close_mathc_file_.txt</th></tr></thead>
@@ -103,6 +178,7 @@
     </tbody>
 </table>
 
+                    </div>
                 </div>
             </div>
             
@@ -110,10 +186,11 @@
     <div class="container">
         <hr>
         <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
-        <p class="pull-right">
+        <p class="pull-right legend">
             <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
             <span class="label label-default diff_chg">Changed</span>
             <span class="label label-default diff_sub">Deleted</span>
+            <br class="visible-xs">
             <span class="label label-info">(f)irst change</span>
             <span class="label label-info">(n)ext change</span>
             <span class="label label-info">(t)op</span>

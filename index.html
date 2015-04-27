@@ -20,6 +20,29 @@
                 padding-top: 50px;
                 margin-bottom: 60px;
             }
+            .navbar-header {
+                float:left!important;
+                margin-right: 0!important;
+                margin-left: 0!important;
+            }
+            .navbar-brand {
+                margin-left:0px!important;
+            }
+            .navbar-nav.navbar-left {
+                float: left!important;
+                margin: 0;
+            }
+            .navbar-nav.navbar-right {
+                float: right!important;
+                margin: 0;
+            }
+            .navbar-nav>li {
+                float:left!important;
+            }
+            .navbar-nav>li>a {
+                padding-top: 12px!important;
+                padding-bottom: 12px!important;
+            }
             .footer {
                 position: fixed;
                 bottom: 0;
@@ -35,9 +58,19 @@
                 padding-right: 15px;
                 padding-left: 15px;
             }
+            .breadcrumb {
+                margin-bottom: 8px;
+                margin-left:48px;
+                text-transform: none;
+            }
+            .leftbreadcrumb {
+                padding-right:0px;
+            }
+            .rightbreadcrumb {
+                padding-left:0px;
+            }
             table.diff {
                 font-size:100%;
-                margin-top:20px;
                 font-family: 'Ubuntu Mono'!important;
                 border: 1px solid #5cb85c;
             }
@@ -46,13 +79,16 @@
                 border-left: 0px!important;
                 border-right: 0px!important;
             }
+            td[nowrap="nowrap"] {
+                width:48%;
+            }
             .diff td {
                 padding:3px 6px!important;
                 border-color:#f5f5f5!important;
             }
             .diff_next,
             .diff_header {
-                width:6px;
+                width:1%;
                 background-color:#EBEBEB;
                 border-top: 0px!important;
                 border-color: #EBEBEB!important;
@@ -69,6 +105,16 @@
             }
             .diff_sub {
                 background-color:rgba(217, 83, 79, 0.5);
+            }
+            .legend {
+                font-size:80%;
+                margin-top:0px;
+            }
+            @media (min-width: 768px ) {
+                .legend {
+                    font-size:100%;
+                    margin-top:0px;
+                }
             }
         </style>
     </head>
@@ -117,8 +163,6 @@
             </footer>
         </div>
             
-
-        </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     </body>
