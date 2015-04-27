@@ -11,6 +11,7 @@ import filecmp
 import difflib
 
 # Constants
+SEP = os.path.sep
 HTML = '''<!DOCTYPE html>
 <html lang="en">
     <head>
@@ -36,11 +37,6 @@ HTML = '''<!DOCTYPE html>
                 </div>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="{tree}">Directory Tree</a></li>
-                    <li>
-                        <ol class="breadcrumb">
-                            {breadcrumb}
-                        </ol>                 
-                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
@@ -50,8 +46,15 @@ HTML = '''<!DOCTYPE html>
         </nav>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-12">
-
+                <div class="col-xs-6 leftbreadcrumb">
+                    <ol class="breadcrumb">
+                        {frombreadcrumb}
+                    </ol>
+                </div>
+                <div class="col-xs-6 rightbreadcrumb">
+                    <ol class="breadcrumb">
+                        {tobreadcrumb}
+                    </ol>
                 </div>
             </div>
             <div class="row">
@@ -75,6 +78,29 @@ STYLES = '''
         padding-top: 50px;
         margin-bottom: 60px;
     }
+    .navbar-header {
+        float:left!important;
+        margin-right: 0!important;
+        margin-left: 0!important;
+    }
+    .navbar-brand {
+        margin-left:0px!important;
+    }
+    .navbar-nav.navbar-left {
+        float: left!important;
+        margin: 0;
+    }
+    .navbar-nav.navbar-right {
+        float: right!important;
+        margin: 0;
+    }
+    .navbar-nav>li {
+        float:left!important;
+    }
+    .navbar-nav>li>a {
+        padding-top: 12px!important;
+        padding-bottom: 12px!important;
+    }
     .footer {
         position: fixed;
         bottom: 0;
@@ -90,11 +116,16 @@ STYLES = '''
         padding-right: 15px;
         padding-left: 15px;
     }
-    .navbar-nav>li>.breadcrumb {
-        margin-top: 6px;
-        margin-bottom:0px;
+    .breadcrumb {
+        margin-bottom: 8px;
+        margin-left:48px;
         text-transform: none;
-        border-radius: 0px;
+    }
+    .leftbreadcrumb {
+        padding-right:0px;
+    }
+    .rightbreadcrumb {
+        padding-left:0px;
     }
     table.diff {
         font-size:100%;
@@ -184,7 +215,6 @@ ROW = '''<tr>
     <td class="{type}"><a href="{compare}">{to}</a></td>
 </tr>
 '''
-
 TD = '''<li><a href="#">{}</a></li>'''
 
 # helper functions
@@ -209,7 +239,7 @@ def write_file(file_path='', data=''):
 
 def common_root(left='', right=''):
     """find common root between two file paths"""
-    return os.path.sep.join([l for l, r in zip(left.split(os.path.sep), right.split(os.path.sep)) if l == r])
+    return SEP.join([l for l, r in zip(left.split(SEP), right.split(SEP)) if l == r])
 
 class DirCmp(filecmp.dircmp):
     """
@@ -256,17 +286,21 @@ class Juxta(object):
         from_file = read_file(from_file_path).splitlines()
         to_file = read_file(to_file_path).splitlines()
         diff_html = difflib.HtmlDiff()
-
+        frombreadcrumb = [TD.format(x) for x in from_file_path.replace(os.path.dirname(self.from_path), '').split(SEP)]
+        tobreadcrumb = [TD.format(x) for x in to_file_path.replace(os.path.dirname(self.to_path), '').split(SEP)]
         diff_html._file_template = HTML.format(**{
             'tree'  : os.path.relpath(os.path.join(self.from_path, 'index.html'), os.path.dirname(from_file_path)),
             'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path)),
-            'breadcrumb' : '\n'.join([TD.format(x) for x in from_file_path.replace(os.path.dirname(self.from_path), '').split(os.path.sep)])
+            'frombreadcrumb' : '\n'.join(frombreadcrumb),
+            'tobreadcrumb' : '\n'.join(tobreadcrumb)
         })
         diff_html._styles = STYLES
         diff_html._table_template = TABLE
         diff_html._legend = LEGEND
 
-        file_diff_html = diff_html.make_file(from_file, to_file, os.path.basename(from_file_path), os.path.basename(to_file_path))
+        file_diff_html = diff_html.make_file(from_file, to_file,
+                                             os.path.basename(from_file_path),
+                                             os.path.basename(to_file_path))
         return file_diff_html
 
     def compare(self):
@@ -282,16 +316,17 @@ class Juxta(object):
             compare = self.compare_dir(dcmp)
             compare = sorted(compare, key=lambda x: x["from"] or x["to"])
             file_rows = [ROW.format(**x) for x in compare]
-            root = common_root(self.from_path, self.to_path) + os.path.sep
+            root = common_root(self.from_path, self.to_path) + SEP
             html = HTML.format(**{
                 'tree'  : '#',
                 'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path)),
-                'breadcrumb' : ''
+                'frombreadcrumb' : '',
+                'tobreadcrumb' : ''
             })
             table = TABLE % ({
                 'header_row' : HEADER.format(**{
-                    'from' : self.from_path.replace(root, '') + os.path.sep,
-                    'to' : self.to_path.replace(root, '') + os.path.sep,
+                    'from' : self.from_path.replace(root, '') + SEP,
+                    'to' : self.to_path.replace(root, '') + SEP,
                 }),
                 'data_rows' : '\n'.join(file_rows),
                 'prefix' : '',
@@ -332,9 +367,9 @@ class Juxta(object):
 
         diff = {
             'type'   : compare_type,
-            'from'   : os.path.join(dcmp.left, name).replace(self.from_path+os.path.sep, ''),
-            'to'     : os.path.join(dcmp.right, name).replace(self.to_path+os.path.sep, ''),
-            'compare': compare_file_path.replace(self.output_path+os.path.sep, '')
+            'from'   : os.path.join(dcmp.left, name).replace(self.from_path+SEP, ''),
+            'to'     : os.path.join(dcmp.right, name).replace(self.to_path+SEP, ''),
+            'compare': compare_file_path.replace(self.output_path+SEP, '')
         }
         return diff
 
@@ -383,9 +418,9 @@ class Juxta(object):
             file_compare_html = self.file_compare(from_file_path, to_file_path)
             diffs.append({
                 'type'   : 'diff_chg',
-                'from'   : from_file_path.replace(self.from_path+os.path.sep, ''),
-                'to'     : to_file_path.replace(self.to_path+os.path.sep, ''),
-                'compare': compare_file_path.replace(self.output_path+os.path.sep, '')
+                'from'   : from_file_path.replace(self.from_path+SEP, ''),
+                'to'     : to_file_path.replace(self.to_path+SEP, ''),
+                'compare': compare_file_path.replace(self.output_path+SEP, '')
             })
             # write
             write_file(compare_file_path, file_compare_html)
@@ -395,7 +430,7 @@ class Juxta(object):
             if not fnmatch.fnmatch(no_match, self.file_filter):
                 diffs.append({
                     'type'   : 'diff_sub',
-                    'from'   : os.path.join(dcmp.left, no_match).replace(self.from_path+os.path.sep, ''),
+                    'from'   : os.path.join(dcmp.left, no_match).replace(self.from_path+SEP, ''),
                     'to'     : '',
                     'compare': ''
                 })
@@ -404,7 +439,7 @@ class Juxta(object):
                 diffs.append({
                     'type'   : 'diff_add',
                     'from'   : '',
-                    'to'     : os.path.join(dcmp.right, no_match).replace(self.to_path+os.path.sep, ''),
+                    'to'     : os.path.join(dcmp.right, no_match).replace(self.to_path+SEP, ''),
                     'compare': ''
                 })
 

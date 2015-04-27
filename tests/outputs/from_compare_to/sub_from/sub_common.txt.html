@@ -21,6 +21,29 @@
         padding-top: 50px;
         margin-bottom: 60px;
     }
+    .navbar-header {
+        float:left!important;
+        margin-right: 0!important;
+        margin-left: 0!important;
+    }
+    .navbar-brand {
+        margin-left:0px!important;
+    }
+    .navbar-nav.navbar-left {
+        float: left!important;
+        margin: 0;
+    }
+    .navbar-nav.navbar-right {
+        float: right!important;
+        margin: 0;
+    }
+    .navbar-nav>li {
+        float:left!important;
+    }
+    .navbar-nav>li>a {
+        padding-top: 12px!important;
+        padding-bottom: 12px!important;
+    }
     .footer {
         position: fixed;
         bottom: 0;
@@ -36,11 +59,16 @@
         padding-right: 15px;
         padding-left: 15px;
     }
-    .navbar-nav>li>.breadcrumb {
-        margin-top: 6px;
-        margin-bottom:0px;
+    .breadcrumb {
+        margin-bottom: 8px;
+        margin-left:48px;
         text-transform: none;
-        border-radius: 0px;
+    }
+    .leftbreadcrumb {
+        padding-right:0px;
+    }
+    .rightbreadcrumb {
+        padding-left:0px;
     }
     table.diff {
         font-size:100%;
@@ -87,14 +115,6 @@
                 </div>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="../index.html">Directory Tree</a></li>
-                    <li>
-                        <ol class="breadcrumb">
-                            <li><a href="#"></a></li>
-<li><a href="#">from</a></li>
-<li><a href="#">sub_from</a></li>
-<li><a href="#">sub_common.txt</a></li>
-                        </ol>                 
-                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
@@ -104,8 +124,21 @@
         </nav>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-12">
-
+                <div class="col-xs-6 leftbreadcrumb">
+                    <ol class="breadcrumb">
+                        <li><a href="#"></a></li>
+<li><a href="#">from</a></li>
+<li><a href="#">sub_from</a></li>
+<li><a href="#">sub_common.txt</a></li>
+                    </ol>
+                </div>
+                <div class="col-xs-6 rightbreadcrumb">
+                    <ol class="breadcrumb">
+                        <li><a href="#"></a></li>
+<li><a href="#">to</a></li>
+<li><a href="#">sub_to</a></li>
+<li><a href="#">sub_common.txt</a></li>
+                    </ol>
                 </div>
             </div>
             <div class="row">

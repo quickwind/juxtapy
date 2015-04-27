@@ -1,18 +1,17 @@
 juxtapy
 ************* Module juxtapy.juxta
-C:251, 0: Line too long (130/128) (line-too-long)
-W:204,42: Attribute 'funny_files' defined outside __init__ (attribute-defined-outside-init)
-W:204, 8: Attribute 'same_files' defined outside __init__ (attribute-defined-outside-init)
-W:204,25: Attribute 'diff_files' defined outside __init__ (attribute-defined-outside-init)
-W:243, 8: Access to a protected member _file_template of a client class (protected-access)
-W:247, 8: Access to a protected member _styles of a client class (protected-access)
-W:248, 8: Access to a protected member _table_template of a client class (protected-access)
-W:249, 8: Access to a protected member _legend of a client class (protected-access)
+W:251,42: Attribute 'funny_files' defined outside __init__ (attribute-defined-outside-init)
+W:251, 8: Attribute 'same_files' defined outside __init__ (attribute-defined-outside-init)
+W:251,25: Attribute 'diff_files' defined outside __init__ (attribute-defined-outside-init)
+W:291, 8: Access to a protected member _file_template of a client class (protected-access)
+W:297, 8: Access to a protected member _styles of a client class (protected-access)
+W:298, 8: Access to a protected member _table_template of a client class (protected-access)
+W:299, 8: Access to a protected member _legend of a client class (protected-access)
 
 
 Report
 ======
-151 statements analysed.
+155 statements analysed.
 
 Statistics by type
 ------------------
@@ -45,13 +44,13 @@ Raw metrics
 +----------+-------+------+---------+-----------+
 |type      |number |%     |previous |difference |
 +==========+=======+======+=========+===========+
-|code      |339    |75.84 |293      |+46.00     |
+|code      |390    |77.84 |391      |-1.00      |
 +----------+-------+------+---------+-----------+
-|docstring |65     |14.54 |67       |-2.00      |
+|docstring |69     |13.77 |69       |=          |
 +----------+-------+------+---------+-----------+
-|comment   |14     |3.13  |14       |=          |
+|comment   |14     |2.79  |14       |=          |
 +----------+-------+------+---------+-----------+
-|empty     |29     |6.49  |28       |+1.00      |
+|empty     |28     |5.59  |29       |-1.00      |
 +----------+-------+------+---------+-----------+
 
 
@@ -75,7 +74,7 @@ Messages by category
 +-----------+-------+---------+-----------+
 |type       |number |previous |difference |
 +===========+=======+=========+===========+
-|convention |1      |4        |-3.00      |
+|convention |0      |0        |=          |
 +-----------+-------+---------+-----------+
 |refactor   |0      |0        |=          |
 +-----------+-------+---------+-----------+
@@ -96,14 +95,12 @@ Messages
 +-------------------------------+------------+
 |attribute-defined-outside-init |3           |
 +-------------------------------+------------+
-|line-too-long                  |1           |
-+-------------------------------+------------+
 
 
 
 Global evaluation
 -----------------
-Your code has been rated at 9.47/10 (previous run: 9.26/10, +0.21)
+Your code has been rated at 9.55/10 (previous run: 9.55/10, +0.00)
 
  
 tests
