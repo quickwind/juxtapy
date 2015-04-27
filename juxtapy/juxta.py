@@ -11,49 +11,164 @@ import filecmp
 import difflib
 
 # Constants
-HTML_STR = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-Type"
-          content="text/html; charset=ISO-8859-1" />
-    <title>{title}</title>
-    <style type="text/css">
-        table.diff {{font-family:Courier; border:medium;}}
-        .diff_header {{background-color:#e0e0e0}}
-        td.diff_header {{text-align:right}}
-        .diff_next {{background-color:#c0c0c0}}
-        .diff_add {{background-color:#aaffaa}}
-        .diff_chg {{background-color:#ffff77}}
-        .diff_sub {{background-color:#ffaaaa}}
-    </style>
-</head>
-<body>
-    <table class="diff" id=""
-           cellspacing="0" cellpadding="0" rules="groups" >
-        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
-        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
-        <thead>
-            <tr><th class="diff_header">{from}</th><th class="diff_header">{to}</th></tr>
-        </thead>
-        <tbody>
-        {rows}
-        </tbody>
-    </table>
-    <table class="diff" summary="Legends">
-        <tr> <th colspan="2"> Legends </th> </tr>
-        <tr> <td> <table border="" summary="Colors">
-                      <tr><th> Colors </th> </tr>
-                      <tr><td class="diff_add">&nbsp;Added&nbsp;</td></tr>
-                      <tr><td class="diff_chg">Changed</td> </tr>
-                      <tr><td class="diff_sub">Deleted</td> </tr>
-                  </table></td>
-             </tr>
-    </table>
-</body>
-</html>'''
+HTML = '''<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Juxtpy File Comparison">
+        <meta name="author" content="tmthydvnprt">
 
-ROW_STR = '<tr><td class="{type}"><a href="{compare}" target="_blank">{from}</a></td><td class="{type}"><a href="{compare}" target="_blank">{to}</a></td></tr>'
+        <title>{title}</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+        <link href="https://bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet">
+        <style>
+            %(styles)s
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="http://tmthydvnprt.github.io/juxtapy">Juxtapy</a>
+                </div>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="{tree}">Directory Tree</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
+                    <li><a href="https://github.com/tmthydvnprt/juxtapy#juxtapy">Help</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1 main">
+                    %(table)s
+                </div>
+            </div>
+            %(legend)s
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    </body>
+</html>
+'''
+STYLES = '''
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+    body {
+        padding-top: 50px;
+        margin-bottom: 60px;
+    }
+    .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #ffffff;
+    }
+    .footer hr {
+        margin:4px;
+        padding:4px;
+    }
+    .footer > .container {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    table.diff {
+        font-size:100%;
+        margin-top:20px;
+        font-family: 'Ubuntu Mono'!important;
+        border: 1px solid #5cb85c;
+    }
+    .diff th {
+        text-align: center;
+        border-left: 0px!important;
+        border-right: 0px!important;
+    }
+    .diff td {
+        padding:3px 6px!important;
+        border-color:#f5f5f5!important;
+    }
+    .diff_next,
+    .diff_header {
+        width:6px;
+        background-color:#EBEBEB;
+        border-top: 0px!important;
+        border-color: #EBEBEB!important;
+    }
+    .diff_next {
+        background-color:#e0e0e0;
+        border-color: #e0e0e0!important;
+    }
+    .diff_add {
+        background-color:rgba(92, 184, 92, 0.5);
+    }
+    .diff_chg {
+        background-color:rgba(240, 173, 78, 0.5);
+    }
+    .diff_sub {
+        background-color:rgba(217, 83, 79, 0.5);
+    }
+'''
+TABLE = '''
+<table id="difflib_chg_%(prefix)s_top" class="diff table table-hover table-condensed">
+    <thead>
+        %(header_row)s
+    </thead>
+    <tbody>
+        %(data_rows)s
+    </tbody>
+</table>
+'''
+LEGEND = '''
+<footer class="footer">
+    <div class="container">
+        <hr>
+        <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
+        <p class="pull-right">
+            <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
+            <span class="label label-default diff_chg">Changed</span>
+            <span class="label label-default diff_sub">Deleted</span>
+            <span class="label label-info">(f)irst change</span>
+            <span class="label label-info">(n)ext change</span>
+            <span class="label label-info">(t)op</span>
+        </p>
+    </div>
+</footer>
+'''
+INDEX_LEGEND = '''
+<footer class="footer">
+    <div class="container">
+        <hr>
+        <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
+        <p class="pull-right">
+            <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
+            <span class="label label-default diff_chg">Changed</span>
+            <span class="label label-default diff_sub">Deleted</span>
+        </p>
+    </div>
+</footer>
+'''
+HEADER = '''<tr>
+    <th class="diff_next"><br></th>
+    <th class="diff_header">{from}</th>
+    <th class="diff_next"><br></th>
+    <th class="diff_header">{to}</th>
+</tr>
+'''
+ROW = '''<tr>
+    <td class="diff_next"><br></td>
+    <td class="{type}"><a href="{compare}">{from}</a></td>
+    <td class="diff_next"><br></td>
+    <td class="{type}"><a href="{compare}">{to}</a></td>
+</tr>
+'''
 
 # helper functions
 def list_diff(list1, list2):
@@ -119,12 +234,21 @@ class Juxta(object):
         if self.compare_type == 'file':
             self.output_path += '.html'
 
-    @staticmethod
-    def file_compare(from_file_path, to_file_path):
+    def file_compare(self, from_file_path, to_file_path):
         """ndiff file compare"""
         from_file = read_file(from_file_path).splitlines()
         to_file = read_file(to_file_path).splitlines()
-        file_diff_html = difflib.HtmlDiff().make_file(from_file, to_file, os.path.basename(from_file_path),  os.path.basename(to_file_path))
+        diff_html = difflib.HtmlDiff()
+
+        diff_html._file_template = HTML.format(**{
+            'tree'  : os.path.relpath(os.path.join(self.from_path, 'index.html'), os.path.dirname(from_file_path)),
+            'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path))
+        })
+        diff_html._styles = STYLES
+        diff_html._table_template = TABLE
+        diff_html._legend = LEGEND
+
+        file_diff_html = diff_html.make_file(from_file, to_file, os.path.basename(from_file_path), os.path.basename(to_file_path))
         return file_diff_html
 
     def compare(self):
@@ -139,14 +263,25 @@ class Juxta(object):
             dcmp = DirCmp(self.from_path, self.to_path, self.file_ignore)
             compare = self.compare_dir(dcmp)
             compare = sorted(compare, key=lambda x: x["from"] or x["to"])
-            file_rows = [ROW_STR.format(**x) for x in compare]
-            root = os.path.dirname(common_root(self.from_path, self.to_path))
-            compare_html = HTML_STR.format(**{
-                'title' : self.compare_name,
-                'from' : self.from_path.replace(root, ''),
-                'to' : self.to_path.replace(root, ''),
-                'rows' :'\n'.join(file_rows)
+            file_rows = [ROW.format(**x) for x in compare]
+            root = common_root(self.from_path, self.to_path) + os.path.sep
+            html = HTML.format(**{
+                'tree'  : '#',
+                'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path))
             })
+            table = TABLE % ({
+                'header_row' : HEADER.format(**{
+                    'from' : self.from_path.replace(root, '') + os.path.sep,
+                    'to' : self.to_path.replace(root, '') + os.path.sep,
+                }),
+                'data_rows' : '\n'.join(file_rows),
+                'prefix' : '',
+            })
+            compare_html = html % {
+                'styles' : STYLES,
+                'table'  : table,
+                'legend' : INDEX_LEGEND
+            }
             # write
             write_file(os.path.join(self.output_path, 'index.html'), compare_html)
 
