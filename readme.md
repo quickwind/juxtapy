@@ -5,9 +5,7 @@ Folder and File juxtaposing in Python
 Description
 -----------
 
-This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` that generates an `html` site comparing two directory trees where files that differ contain links to their line-by-line comparisons. 
-
-[Website](http://tmthydvnprt.github.io/juxtapy)
+This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` that generates an `html` site comparing two directory trees where files that differ contain links to their line-by-line comparisons. http://tmthydvnprt.github.io/juxtapy
 
 ### Features
 * ignore specific files
@@ -70,7 +68,7 @@ Todo
 ----
 * [x] File comparison
 * [x] Directory comparison
-* [ ] Make the `html` more modern
+* [x] Make the `html` more modern
 * [ ] Nest Directory Tree
 
 License
