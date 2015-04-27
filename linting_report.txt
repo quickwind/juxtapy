@@ -1,12 +1,12 @@
 juxtapy
 ************* Module juxtapy.juxta
-W:262,42: Attribute 'funny_files' defined outside __init__ (attribute-defined-outside-init)
-W:262, 8: Attribute 'same_files' defined outside __init__ (attribute-defined-outside-init)
-W:262,25: Attribute 'diff_files' defined outside __init__ (attribute-defined-outside-init)
-W:299, 8: Access to a protected member _file_template of a client class (protected-access)
-W:305, 8: Access to a protected member _styles of a client class (protected-access)
-W:306, 8: Access to a protected member _table_template of a client class (protected-access)
-W:307, 8: Access to a protected member _legend of a client class (protected-access)
+W:275,42: Attribute 'funny_files' defined outside __init__ (attribute-defined-outside-init)
+W:275, 8: Attribute 'same_files' defined outside __init__ (attribute-defined-outside-init)
+W:275,25: Attribute 'diff_files' defined outside __init__ (attribute-defined-outside-init)
+W:312, 8: Access to a protected member _file_template of a client class (protected-access)
+W:318, 8: Access to a protected member _styles of a client class (protected-access)
+W:319, 8: Access to a protected member _table_template of a client class (protected-access)
+W:320, 8: Access to a protected member _legend of a client class (protected-access)
 
 
 Report
@@ -44,13 +44,13 @@ Raw metrics
 +----------+-------+------+---------+-----------+
 |type      |number |%     |previous |difference |
 +==========+=======+======+=========+===========+
-|code      |400    |79.37 |400      |=          |
+|code      |413    |79.88 |400      |+13.00     |
 +----------+-------+------+---------+-----------+
-|docstring |63     |12.50 |63       |=          |
+|docstring |63     |12.19 |63       |=          |
 +----------+-------+------+---------+-----------+
-|comment   |14     |2.78  |14       |=          |
+|comment   |14     |2.71  |14       |=          |
 +----------+-------+------+---------+-----------+
-|empty     |27     |5.36  |27       |=          |
+|empty     |27     |5.22  |27       |=          |
 +----------+-------+------+---------+-----------+
 
 
