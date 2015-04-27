@@ -13,8 +13,27 @@
         <link href="https://bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet">
         <style>
             
+    html {
+        position: relative;
+        min-height: 100%;
+    }
     body {
         padding-top: 60px;
+        margin-bottom: 60px;
+    }
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+    }
+    .footer hr {
+        margin:4px;
+        padding:4px;
+    }
+    .footer > .container {
+        padding-right: 15px;
+        padding-left: 15px;
     }
     table.diff {
         margin-top:20px;
@@ -32,7 +51,7 @@
     }
     .diff_next,
     .diff_header {
-        width:1%;
+        width:6px;
         background-color:#EBEBEB;
         border-top: 0px!important;
         border-color: #EBEBEB!important;
@@ -57,11 +76,15 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Juxtapy</a>
-                    <ul class="nav navbar-nav">
-                        <li><a href="#">Directory Tree</a></li>
-                    </ul>
+                    <a class="navbar-brand" href="http://tmthydvnprt.github.io/juxtapy">Juxtapy</a>
                 </div>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="#">Directory Tree</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
+                    <li><a href="https://github.com/tmthydvnprt/juxtapy#juxtapy">Help</a></li>
+                </ul>
             </div>
         </nav>
         <div class="container-fluid">
@@ -71,78 +94,95 @@
 <table id="difflib_chg__top" class="diff table table-hover table-condensed">
     <thead>
         <tr>
-    <td class=""><a href="">/from</a></td>
-    <td class=""><a href="">/to</a></td>
+    <th class="diff_next"><br></th>
+    <th class="diff_header">from/</th>
+    <th class="diff_next"><br></th>
+    <th class="diff_header">to/</th>
 </tr>
 
     </thead>
     <tbody>
         <tr>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="close_match_file.txt.html">close_match_file.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="close_match_file.txt.html">close_mathc_file_.txt</a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="common_file.txt.html">common_file.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="common_file.txt.html">common_file.txt</a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class=""><a href="from.txt.html">from.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class=""><a href="from.txt.html">from.txt</a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class="diff_sub"><a href="">only_in_from.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class="diff_sub"><a href=""></a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="sub_common/diff.txt.html">sub_common/diff.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="sub_common/diff.txt.html">sub_common/diff.txt</a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class=""><a href="sub_common/same.txt.html">sub_common/same.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class=""><a href="sub_common/same.txt.html">sub_common/same.txt</a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="sub_from/sub_common.txt.html">sub_from/sub_common.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class="diff_chg"><a href="sub_from/sub_common.txt.html">sub_to/sub_common.txt</a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class=""><a href="to.txt.html">to.txt</a></td>
+    <td class="diff_next"><br></td>
     <td class=""><a href="to.txt.html">to.txt</a></td>
 </tr>
 
 <tr>
+    <td class="diff_next"><br></td>
     <td class="diff_add"><a href=""></a></td>
+    <td class="diff_next"><br></td>
     <td class="diff_add"><a href="">unique_to_to.txt</a></td>
 </tr>
 
     </tbody>
 </table>
 
-                    <table id="legends" class="table table-bordered table-condensed">
-    <thead><tr><strong>Legends</strong></tr></thead>
-    <tbody>
-        <tr>
-            <td><strong>Colors:</strong></td>
-            <td class="diff_add">Added</td>
-            <td class="diff_chg">Changed</td>
-            <td class="diff_sub">Deleted</td>
-            <td><strong>Links:</strong></td>
-            <td>(f)irst change</td>
-            <td>(n)ext change</td>
-            <td>(t)op</td>
-        </tr>
-    </tbody>
-</table>
-
                 </div>
             </div>
+            
+<footer class="footer">
+    <div class="container">
+        <hr>
+        <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
+        <p class="pull-right">
+            <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
+            <span class="label label-default diff_chg">Changed</span>
+            <span class="label label-default diff_sub">Deleted</span>
+        </p>
+    </div>
+</footer>
+
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>

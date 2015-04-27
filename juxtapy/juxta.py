@@ -32,20 +32,24 @@ HTML = '''<!DOCTYPE html>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Juxtapy</a>
-                    <ul class="nav navbar-nav">
-                        <li><a href="{tree}">Directory Tree</a></li>
-                    </ul>
+                    <a class="navbar-brand" href="http://tmthydvnprt.github.io/juxtapy">Juxtapy</a>
                 </div>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="{tree}">Directory Tree</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
+                    <li><a href="https://github.com/tmthydvnprt/juxtapy#juxtapy">Help</a></li>
+                </ul>
             </div>
         </nav>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1 main">
                     %(table)s
-                    %(legend)s
                 </div>
             </div>
+            %(legend)s
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -53,8 +57,27 @@ HTML = '''<!DOCTYPE html>
 </html>
 '''
 STYLES = '''
+    html {
+        position: relative;
+        min-height: 100%;
+    }
     body {
         padding-top: 60px;
+        margin-bottom: 60px;
+    }
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+    }
+    .footer hr {
+        margin:4px;
+        padding:4px;
+    }
+    .footer > .container {
+        padding-right: 15px;
+        padding-left: 15px;
     }
     table.diff {
         margin-top:20px;
@@ -72,7 +95,7 @@ STYLES = '''
     }
     .diff_next,
     .diff_header {
-        width:1%;
+        width:6px;
         background-color:#EBEBEB;
         border-top: 0px!important;
         border-color: #EBEBEB!important;
@@ -101,25 +124,46 @@ TABLE = '''
     </tbody>
 </table>
 '''
-LEGEND = '''<table id="legends" class="table table-bordered table-condensed">
-    <thead><tr><strong>Legends</strong></tr></thead>
-    <tbody>
-        <tr>
-            <td><strong>Colors:</strong></td>
-            <td class="diff_add">Added</td>
-            <td class="diff_chg">Changed</td>
-            <td class="diff_sub">Deleted</td>
-            <td><strong>Links:</strong></td>
-            <td>(f)irst change</td>
-            <td>(n)ext change</td>
-            <td>(t)op</td>
-        </tr>
-    </tbody>
-</table>
+LEGEND = '''
+<footer class="footer">
+    <div class="container">
+        <hr>
+        <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
+        <p class="pull-right">
+            <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
+            <span class="label label-default diff_chg">Changed</span>
+            <span class="label label-default diff_sub">Deleted</span>
+            <span class="label label-info">(f)irst change</span>
+            <span class="label label-info">(n)ext change</span>
+            <span class="label label-info">(t)op</span>
+        </p>
+    </div>
+</footer>
 '''
-
+INDEX_LEGEND = '''
+<footer class="footer">
+    <div class="container">
+        <hr>
+        <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
+        <p class="pull-right">
+            <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
+            <span class="label label-default diff_chg">Changed</span>
+            <span class="label label-default diff_sub">Deleted</span>
+        </p>
+    </div>
+</footer>
+'''
+HEADER = '''<tr>
+    <th class="diff_next"><br></th>
+    <th class="diff_header">{from}</th>
+    <th class="diff_next"><br></th>
+    <th class="diff_header">{to}</th>
+</tr>
+'''
 ROW = '''<tr>
+    <td class="diff_next"><br></td>
     <td class="{type}"><a href="{compare}">{from}</a></td>
+    <td class="diff_next"><br></td>
     <td class="{type}"><a href="{compare}">{to}</a></td>
 </tr>
 '''
@@ -218,17 +262,15 @@ class Juxta(object):
             compare = self.compare_dir(dcmp)
             compare = sorted(compare, key=lambda x: x["from"] or x["to"])
             file_rows = [ROW.format(**x) for x in compare]
-            root = common_root(self.from_path, self.to_path)
+            root = common_root(self.from_path, self.to_path) + os.path.sep
             html = HTML.format(**{
                 'tree'  : '#',
                 'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path))
             })
             table = TABLE % ({
-                'header_row' : ROW.format(**{
-                    'from' : self.from_path.replace(root, ''),
-                    'to' : self.to_path.replace(root, ''),
-                    'type' : '',
-                    'compare' : ''
+                'header_row' : HEADER.format(**{
+                    'from' : self.from_path.replace(root, '') + os.path.sep,
+                    'to' : self.to_path.replace(root, '') + os.path.sep,
                 }),
                 'data_rows' : '\n'.join(file_rows),
                 'prefix' : '',
@@ -236,7 +278,7 @@ class Juxta(object):
             compare_html = html % {
                 'styles' : STYLES,
                 'table'  : table,
-                'legend' : LEGEND
+                'legend' : INDEX_LEGEND
             }
             # write
             write_file(os.path.join(self.output_path, 'index.html'), compare_html)

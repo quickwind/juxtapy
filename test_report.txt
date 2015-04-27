@@ -6,12 +6,12 @@ test file comparison fails ... ok
 Name            Stmts   Miss Branch BrMiss  Cover   Missing
 -----------------------------------------------------------
 juxtapy             2      0      0      0   100%   
-juxtapy.juxta     123      0     46      6    96%   
+juxtapy.juxta     125      0     46      6    96%   
 tests               1      0      0      0   100%   
 tests.test         27      0      0      0   100%   
 -----------------------------------------------------------
-TOTAL             153      0     46      6    97%   
+TOTAL             155      0     46      6    97%   
 ----------------------------------------------------------------------
-Ran 4 tests in 0.020s
+Ran 4 tests in 0.016s
 
 OK
