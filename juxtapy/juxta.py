@@ -62,14 +62,15 @@ STYLES = '''
         min-height: 100%;
     }
     body {
-        padding-top: 60px;
+        padding-top: 50px;
         margin-bottom: 60px;
     }
     .footer {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         width: 100%;
         height: 60px;
+        background-color: #ffffff;
     }
     .footer hr {
         margin:4px;
@@ -80,6 +81,7 @@ STYLES = '''
         padding-left: 15px;
     }
     table.diff {
+        font-size:100%;
         margin-top:20px;
         font-family: 'Ubuntu Mono'!important;
         border: 1px solid #5cb85c;
