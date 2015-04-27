@@ -36,6 +36,11 @@ HTML = '''<!DOCTYPE html>
                 </div>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="{tree}">Directory Tree</a></li>
+                    <li>
+                        <ol class="breadcrumb">
+                            {breadcrumb}
+                        </ol>                 
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
@@ -45,7 +50,12 @@ HTML = '''<!DOCTYPE html>
         </nav>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-10 col-sm-offset-1 main">
+                <div class="col-sm-12">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                     %(table)s
                 </div>
             </div>
@@ -80,9 +90,14 @@ STYLES = '''
         padding-right: 15px;
         padding-left: 15px;
     }
+    .navbar-nav>li>.breadcrumb {
+        margin-top: 6px;
+        margin-bottom:0px;
+        text-transform: none;
+        border-radius: 0px;
+    }
     table.diff {
         font-size:100%;
-        margin-top:20px;
         font-family: 'Ubuntu Mono'!important;
         border: 1px solid #5cb85c;
     }
@@ -170,6 +185,8 @@ ROW = '''<tr>
 </tr>
 '''
 
+TD = '''<li><a href="#">{}</a></li>'''
+
 # helper functions
 def list_diff(list1, list2):
     """return list1 items not in list2"""
@@ -242,7 +259,8 @@ class Juxta(object):
 
         diff_html._file_template = HTML.format(**{
             'tree'  : os.path.relpath(os.path.join(self.from_path, 'index.html'), os.path.dirname(from_file_path)),
-            'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path))
+            'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path)),
+            'breadcrumb' : '\n'.join([TD.format(x) for x in from_file_path.replace(os.path.dirname(self.from_path), '').split(os.path.sep)])
         })
         diff_html._styles = STYLES
         diff_html._table_template = TABLE
@@ -267,7 +285,8 @@ class Juxta(object):
             root = common_root(self.from_path, self.to_path) + os.path.sep
             html = HTML.format(**{
                 'tree'  : '#',
-                'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path))
+                'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path)),
+                'breadcrumb' : ''
             })
             table = TABLE % ({
                 'header_row' : HEADER.format(**{

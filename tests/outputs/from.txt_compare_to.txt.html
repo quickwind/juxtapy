@@ -36,9 +36,14 @@
         padding-right: 15px;
         padding-left: 15px;
     }
+    .navbar-nav>li>.breadcrumb {
+        margin-top: 6px;
+        margin-bottom:0px;
+        text-transform: none;
+        border-radius: 0px;
+    }
     table.diff {
         font-size:100%;
-        margin-top:20px;
         font-family: 'Ubuntu Mono'!important;
         border: 1px solid #5cb85c;
     }
@@ -82,6 +87,12 @@
                 </div>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="from.txt/index.html">Directory Tree</a></li>
+                    <li>
+                        <ol class="breadcrumb">
+                            <li><a href="#"></a></li>
+<li><a href="#">from.txt</a></li>
+                        </ol>                 
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
@@ -91,7 +102,12 @@
         </nav>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-10 col-sm-offset-1 main">
+                <div class="col-sm-12">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                     
 <table id="difflib_chg_to7__top" class="diff table table-hover table-condensed">
     <thead>
