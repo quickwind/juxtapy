@@ -1,17 +1,17 @@
 juxtapy
 ************* Module juxtapy.juxta
-W:251,42: Attribute 'funny_files' defined outside __init__ (attribute-defined-outside-init)
-W:251, 8: Attribute 'same_files' defined outside __init__ (attribute-defined-outside-init)
-W:251,25: Attribute 'diff_files' defined outside __init__ (attribute-defined-outside-init)
-W:291, 8: Access to a protected member _file_template of a client class (protected-access)
-W:297, 8: Access to a protected member _styles of a client class (protected-access)
-W:298, 8: Access to a protected member _table_template of a client class (protected-access)
-W:299, 8: Access to a protected member _legend of a client class (protected-access)
+W:255,42: Attribute 'funny_files' defined outside __init__ (attribute-defined-outside-init)
+W:255, 8: Attribute 'same_files' defined outside __init__ (attribute-defined-outside-init)
+W:255,25: Attribute 'diff_files' defined outside __init__ (attribute-defined-outside-init)
+W:292, 8: Access to a protected member _file_template of a client class (protected-access)
+W:298, 8: Access to a protected member _styles of a client class (protected-access)
+W:299, 8: Access to a protected member _table_template of a client class (protected-access)
+W:300, 8: Access to a protected member _legend of a client class (protected-access)
 
 
 Report
 ======
-155 statements analysed.
+157 statements analysed.
 
 Statistics by type
 ------------------
@@ -25,7 +25,7 @@ Statistics by type
 +---------+-------+-----------+-----------+------------+---------+
 |method   |6      |6          |=          |100.00      |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
-|function |6      |6          |=          |100.00      |0.00     |
+|function |7      |7          |=          |100.00      |0.00     |
 +---------+-------+-----------+-----------+------------+---------+
 
 
@@ -44,13 +44,13 @@ Raw metrics
 +----------+-------+------+---------+-----------+
 |type      |number |%     |previous |difference |
 +==========+=======+======+=========+===========+
-|code      |390    |77.84 |391      |-1.00      |
+|code      |389    |78.90 |389      |=          |
 +----------+-------+------+---------+-----------+
-|docstring |69     |13.77 |69       |=          |
+|docstring |63     |12.78 |63       |=          |
 +----------+-------+------+---------+-----------+
-|comment   |14     |2.79  |14       |=          |
+|comment   |14     |2.84  |14       |=          |
 +----------+-------+------+---------+-----------+
-|empty     |28     |5.59  |29       |-1.00      |
+|empty     |27     |5.48  |27       |=          |
 +----------+-------+------+---------+-----------+
 
 
@@ -80,7 +80,7 @@ Messages by category
 +-----------+-------+---------+-----------+
 |warning    |7      |7        |=          |
 +-----------+-------+---------+-----------+
-|error      |0      |0        |=          |
+|error      |0      |2        |-2.00      |
 +-----------+-------+---------+-----------+
 
 
@@ -100,7 +100,7 @@ Messages
 
 Global evaluation
 -----------------
-Your code has been rated at 9.55/10 (previous run: 9.55/10, +0.00)
+Your code has been rated at 9.55/10 (previous run: 8.92/10, +0.64)
 
  
 tests

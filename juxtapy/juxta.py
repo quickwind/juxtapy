@@ -137,13 +137,16 @@ STYLES = '''
         border-left: 0px!important;
         border-right: 0px!important;
     }
+    td[nowrap="nowrap"] {
+        width:48%;
+    }
     .diff td {
         padding:3px 6px!important;
         border-color:#f5f5f5!important;
     }
     .diff_next,
     .diff_header {
-        width:6px;
+        width:1%;
         background-color:#EBEBEB;
         border-top: 0px!important;
         border-color: #EBEBEB!important;
@@ -203,19 +206,23 @@ INDEX_LEGEND = '''
 '''
 HEADER = '''<tr>
     <th class="diff_next"><br></th>
-    <th class="diff_header">{from}</th>
     <th class="diff_next"><br></th>
-    <th class="diff_header">{to}</th>
+    <th nowrap="nowrap" class="diff_header">{from}</th>
+    <th class="diff_next"><br></th>
+    <th class="diff_next"><br></th>
+    <th nowrap="nowrap" class="diff_header">{to}</th>
 </tr>
 '''
 ROW = '''<tr>
     <td class="diff_next"><br></td>
-    <td class="{type}"><a href="{compare}">{from}</a></td>
     <td class="diff_next"><br></td>
-    <td class="{type}"><a href="{compare}">{to}</a></td>
+    <td nowrap="nowrap" class="{type}"><a href="{compare}">{from}</a></td>
+    <td class="diff_next"><br></td>
+    <td class="diff_next"><br></td>
+    <td nowrap="nowrap" class="{type}"><a href="{compare}">{to}</a></td>
 </tr>
 '''
-TD = '''<li><a href="#">{}</a></li>'''
+TD = '''<li class="{}">{}</li>'''
 
 # helper functions
 def list_diff(list1, list2):
@@ -241,6 +248,10 @@ def common_root(left='', right=''):
     """find common root between two file paths"""
     return SEP.join([l for l, r in zip(left.split(SEP), right.split(SEP)) if l == r])
 
+def make_breadcrumb(path):
+    """make bootstrap breadcrumb list from file path"""
+    return '\n'.join([TD.format('active' if i == len(path.split(SEP))-1 else '', x) for i, x in enumerate(path.split(SEP))])
+
 class DirCmp(filecmp.dircmp):
     """
     filecmp.dircmp sublass to override phase3 to compare file content
@@ -253,7 +264,6 @@ class DirCmp(filecmp.dircmp):
     filecmp.dircmp.methodmap['same_files'] = phase3
     filecmp.dircmp.methodmap['diff_files'] = phase3
     filecmp.dircmp.methodmap['funny_files'] = phase3
-
 
 class Juxta(object):
     """compare folder and files by juxtaposing from (left) and to (right) directories"""
@@ -286,13 +296,11 @@ class Juxta(object):
         from_file = read_file(from_file_path).splitlines()
         to_file = read_file(to_file_path).splitlines()
         diff_html = difflib.HtmlDiff()
-        frombreadcrumb = [TD.format(x) for x in from_file_path.replace(os.path.dirname(self.from_path), '').split(SEP)]
-        tobreadcrumb = [TD.format(x) for x in to_file_path.replace(os.path.dirname(self.to_path), '').split(SEP)]
         diff_html._file_template = HTML.format(**{
             'tree'  : os.path.relpath(os.path.join(self.from_path, 'index.html'), os.path.dirname(from_file_path)),
             'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path)),
-            'frombreadcrumb' : '\n'.join(frombreadcrumb),
-            'tobreadcrumb' : '\n'.join(tobreadcrumb)
+            'frombreadcrumb' : make_breadcrumb(from_file_path),
+            'tobreadcrumb' : make_breadcrumb(to_file_path)
         })
         diff_html._styles = STYLES
         diff_html._table_template = TABLE
@@ -320,8 +328,8 @@ class Juxta(object):
             html = HTML.format(**{
                 'tree'  : '#',
                 'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path)),
-                'frombreadcrumb' : '',
-                'tobreadcrumb' : ''
+                'frombreadcrumb' : make_breadcrumb(self.from_path),
+                'tobreadcrumb' : make_breadcrumb(self.to_path)
             })
             table = TABLE % ({
                 'header_row' : HEADER.format(**{
@@ -381,13 +389,11 @@ class Juxta(object):
         # compare same files
         for name in dcmp.same_files:
             if not fnmatch.fnmatch(name, self.file_filter):
-                print 'same', name
                 diffs.append(self.write_comparison(name, dcmp))
 
         # compare different files
         for name in dcmp.diff_files:
             if not fnmatch.fnmatch(name, self.file_filter):
-                print 'diff', name
                 diffs.append(self.write_comparison(name, dcmp, 'diff_chg'))
 
         # compare common subdirectories
@@ -428,19 +434,16 @@ class Juxta(object):
         # add no match files and directories to diffs
         for no_match in list_diff(dcmp.left_only, [os.path.basename(x[0]) for x in close_files+close_dirs]):
             if not fnmatch.fnmatch(no_match, self.file_filter):
-                diffs.append({
-                    'type'   : 'diff_sub',
-                    'from'   : os.path.join(dcmp.left, no_match).replace(self.from_path+SEP, ''),
-                    'to'     : '',
-                    'compare': ''
-                })
+
+                fromdiff = self.write_comparison(no_match, dcmp, 'diff_sub')
+                fromdiff['to'] = ''
+                diffs.append(fromdiff)
+
         for no_match in list_diff(dcmp.right_only, [os.path.basename(x[1]) for x in close_files+close_dirs]):
             if not fnmatch.fnmatch(no_match, self.file_filter):
-                diffs.append({
-                    'type'   : 'diff_add',
-                    'from'   : '',
-                    'to'     : os.path.join(dcmp.right, no_match).replace(self.to_path+SEP, ''),
-                    'compare': ''
-                })
+
+                todiff = self.write_comparison(no_match, dcmp, 'diff_add')
+                todiff['from'] = ''
+                diffs.append(todiff)
 
         return diffs
