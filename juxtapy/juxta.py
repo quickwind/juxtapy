@@ -232,7 +232,7 @@ def list_diff(list1, list2):
 def read_file(file_path='', encoding='utf-8'):
     """read a file into a string. assumes utf-8 encoding."""
     source = ''
-    if os.path.exists(file_path):
+    if os.path.exists(file_path) and os.path.isfile(file_path):
         fid = codecs.open(file_path, mode='r', encoding=encoding)
         source = fid.read()
         fid.close()
@@ -365,6 +365,12 @@ class Juxta(object):
         # paths
         from_file_path = os.path.join(dcmp.left, name)
         to_file_path = os.path.join(dcmp.right, name)
+
+        if not os.path.exists(from_file_path):
+            from_file_path = os.path.join(os.path.dirname(from_file_path), '')
+        if not os.path.exists(to_file_path):
+            to_file_path = os.path.join(os.path.dirname(to_file_path), '')
+
         compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name) + '.html'
         # compare
         file_compare_html = self.file_compare(from_file_path, to_file_path)
