@@ -59,7 +59,9 @@ HTML = '''<!DOCTYPE html>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    %(table)s
+                    <div class="table-responsive">
+                        %(table)s
+                    </div>
                 </div>
             </div>
             %(legend)s
@@ -164,6 +166,16 @@ STYLES = '''
     .diff_sub {
         background-color:rgba(217, 83, 79, 0.5);
     }
+    .legend {
+        font-size:80%;
+        margin-top:0px;
+    }
+    @media (min-width: 768px ) {
+        .legend {
+            font-size:100%;
+            margin-top:0px;
+        }
+    }
 '''
 TABLE = '''
 <table id="difflib_chg_%(prefix)s_top" class="diff table table-hover table-condensed">
@@ -180,10 +192,11 @@ LEGEND = '''
     <div class="container">
         <hr>
         <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
-        <p class="pull-right">
+        <p class="pull-right legend">
             <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
             <span class="label label-default diff_chg">Changed</span>
             <span class="label label-default diff_sub">Deleted</span>
+            <br class="visible-xs">
             <span class="label label-info">(f)irst change</span>
             <span class="label label-info">(n)ext change</span>
             <span class="label label-info">(t)op</span>
