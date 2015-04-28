@@ -2,16 +2,17 @@ test directory comparison passes ... ok
 test directory comparison fails ... ok
 test file comparison passes ... ok
 test file comparison fails ... ok
+test index.html ... ok
 
 Name            Stmts   Miss Branch BrMiss  Cover   Missing
 -----------------------------------------------------------
 juxtapy             2      0      0      0   100%   
-juxtapy.juxta     135      0     50      5    97%   
+juxtapy.juxta     140      0     50      5    97%   
 tests               1      0      0      0   100%   
-tests.test         27      0      0      0   100%   
+tests.test         31      0      0      0   100%   
 -----------------------------------------------------------
-TOTAL             165      0     50      5    98%   
+TOTAL             174      0     50      5    98%   
 ----------------------------------------------------------------------
-Ran 4 tests in 0.018s
+Ran 5 tests in 0.022s
 
 OK

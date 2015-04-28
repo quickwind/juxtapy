@@ -44,32 +44,66 @@ HTML = '''<!DOCTYPE html>
                 </ul>
             </div>
         </nav>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-6 leftbreadcrumb">
-                    <ol class="breadcrumb">
-                        {frombreadcrumb}
-                    </ol>
-                </div>
-                <div class="col-xs-6 rightbreadcrumb">
-                    <ol class="breadcrumb">
-                        {tobreadcrumb}
-                    </ol>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="table-responsive">
-                        %(table)s
-                    </div>
-                </div>
-            </div>
-            %(legend)s
-        </div>
+        {page}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     </body>
 </html>
+'''
+COMPARE_PAGE = '''<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6 leftbreadcrumb">
+            <ol class="breadcrumb">
+                {frombreadcrumb}
+            </ol>
+        </div>
+        <div class="col-xs-6 rightbreadcrumb">
+            <ol class="breadcrumb">
+                {tobreadcrumb}
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                %(table)s
+            </div>
+        </div>
+    </div>
+    %(legend)s
+</div>
+'''
+HOME_PAGE = '''<div class="jumbotron text-center">
+    <div class="container">
+        <h1>Juxtapy</h1>
+        <p>Folder and File juxtaposing in Python</p>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 text-center">
+            <p class="lead">A wrapper for python's <code>difflib.HtmlDiff</code> &amp; <code>filecmp.dircmp</code> that generates an <code>html</code> site comparing two directory trees where files link to their line-by-line comparisons.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-3 text-center">
+            <a class="btn btn-lg btn-success" href="https://github.com/tmthydvnprt/juxtapy#juxtapy" role="button">View<br>Readme</a>
+        </div>
+        <div class="col-md-2 text-center">
+            <a class="btn btn-lg btn-success" href="from_compare_to/index.html" role="button">Example<br>Folder Output</a>
+        </div>
+        <div class="col-md-2 text-center">
+            <a class="btn btn-lg btn-success" href="from.txt_compare_to.txt.html" role="button">Example<br>File Output</a>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <hr>
+            <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
+        </div>
+    </footer>
+</div>
 '''
 STYLES = '''
     html {
@@ -265,6 +299,16 @@ def make_breadcrumb(path):
     """make bootstrap breadcrumb list from file path"""
     return '\n'.join([TD.format('active' if i == len(path.split(SEP))-1 else '', x) for i, x in enumerate(path.split(SEP))])
 
+def write_index(path=''):
+    """write home page"""
+    html = HTML.format(**{
+        'tree'  : 'from_compare_to/index.html',
+        'title' : 'Juxtapy',
+        'page'  : HOME_PAGE
+    }) % {'styles' : STYLES}
+    # write
+    write_file(os.path.join(path, 'index.html'), html)
+
 class DirCmp(filecmp.dircmp):
     """
     filecmp.dircmp sublass to override phase3 to compare file content
@@ -312,8 +356,10 @@ class Juxta(object):
         diff_html._file_template = HTML.format(**{
             'tree'  : os.path.relpath(os.path.join(self.from_path, 'index.html'), os.path.dirname(from_file_path)),
             'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path)),
-            'frombreadcrumb' : make_breadcrumb(from_file_path),
-            'tobreadcrumb' : make_breadcrumb(to_file_path)
+            'page' : COMPARE_PAGE.format(**{
+                'frombreadcrumb' : make_breadcrumb(from_file_path),
+                'tobreadcrumb' : make_breadcrumb(to_file_path)
+            })
         })
         diff_html._styles = STYLES
         diff_html._table_template = TABLE
@@ -341,8 +387,10 @@ class Juxta(object):
             html = HTML.format(**{
                 'tree'  : '#',
                 'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path)),
-                'frombreadcrumb' : make_breadcrumb(self.from_path),
-                'tobreadcrumb' : make_breadcrumb(self.to_path)
+                'page' : COMPARE_PAGE.format(**{
+                    'frombreadcrumb' : make_breadcrumb(self.from_path),
+                    'tobreadcrumb' : make_breadcrumb(self.to_path)
+                })
             })
             table = TABLE % ({
                 'header_row' : HEADER.format(**{
