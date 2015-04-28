@@ -88,13 +88,13 @@ HOME_PAGE = '''<div class="jumbotron text-center">
     </div>
     <div class="row">
         <div class="col-md-2 col-md-offset-3 text-center">
-            <a class="btn btn-lg btn-success" href="https://github.com/tmthydvnprt/juxtapy#juxtapy" role="button">View<br>Readme</a>
+            <a class="btn btn btn-primary" href="https://github.com/tmthydvnprt/juxtapy#juxtapy" role="button">View<br>Readme</a>
         </div>
         <div class="col-md-2 text-center">
-            <a class="btn btn-lg btn-success" href="from_compare_to/index.html" role="button">Example<br>Folder Output</a>
+            <a class="btn btn btn-info" href="from_compare_to/index.html" role="button">Example<br>Folder Output</a>
         </div>
         <div class="col-md-2 text-center">
-            <a class="btn btn-lg btn-success" href="from.txt_compare_to.txt.html" role="button">Example<br>File Output</a>
+            <a class="btn btn btn-success" href="from.txt_compare_to.txt.html" role="button">Example<br>File Output</a>
         </div>
     </div>
     <footer class="footer">
