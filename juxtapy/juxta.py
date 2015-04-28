@@ -276,19 +276,25 @@ def list_diff(list1, list2):
     """return list1 items not in list2"""
     return [x for x in list1 if x not in set(list2)]
 
-def read_file(file_path='', encoding='utf-8'):
+def read_file(file_path=''):
     """read a file into a string. assumes utf-8 encoding."""
     source = ''
     if os.path.exists(file_path) and os.path.isfile(file_path):
-        fid = codecs.open(file_path, mode='r', encoding=encoding)
-        source = fid.read()
+        fid = codecs.open(file_path, 'r', 'utf-8')
+        try:
+            source = fid.read()
+        except:
+            source = 'error: could not read file'
         fid.close()
     return source
 
 def write_file(file_path='', data=''):
     """write a file from a string."""
-    fid = codecs.open(file_path, 'w')
-    fid.write(data)
+    fid = codecs.open(file_path, 'w', 'utf-8')
+    try:
+        fid.write(data)
+    except:
+        fid.write('error: could not write file')
     fid.close()
 
 def common_root(left='', right=''):

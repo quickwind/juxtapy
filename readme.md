@@ -70,6 +70,10 @@ Todo
 * [x] Directory comparison
 * [x] Make the `html` more modern
 * [ ] Nest Directory Tree
+* [ ] Add options:
+    * [ ] skip comparing same files
+    * [ ] 
+* [ ]
 
 License
 -------
