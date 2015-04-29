@@ -51,6 +51,11 @@ def parse_args(args):
         help="comma separated files to ignore (default: '.DS_Store,.localized')"
     )
     parser.add_argument(
+        "--q", "--quiet",
+        action="store_true",
+        help="show no info"
+    )
+    parser.add_argument(
         "--version",
         help="display the program's version",
         action="version",
@@ -67,7 +72,7 @@ def main(lineargs):
     args.file_ignore = args.file_ignore.split(',')
 
     # do comparison
-    jxt = Juxta(args.from_path, args.to_path, args.output_path, args.file_filter, args.file_ignore)
+    jxt = Juxta(args.from_path, args.to_path, args.output_path, args.file_filter, args.file_ignore, args.quiet)
     response = jxt.compare()
     print response
 

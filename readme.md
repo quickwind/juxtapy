@@ -23,7 +23,7 @@ This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` tha
 Code Examples
 -------------
 
-###Module Interface
+### Module Interface
 
 ```python
 from juxtapy.juxta import Juxta
@@ -33,10 +33,10 @@ response = jxt.compare()
 print repsonse
 ```
 
-###Command-Line Interface
+### Command-Line Interface
 
 ```sh
-python juxtapy -f /from/path -t /to/path -o /output/path --file_filter *.pyc
+machine:~ user$ python juxtapy -f /from/path -t /to/path -o /output/path --file_filter *.pyc
 ```
 
 Installation
@@ -45,19 +45,52 @@ TBD, I just use it in a directory at the moment...
 
 API Reference
 -------------
+
+### Module Interface
 ```python
-Help on class Juxta in module juxtapy.juxta:
 
 class Juxta(__builtin__.object)
  |  compare folder and files by juxtaposing from (left) and to (right) directories
  |  
  |  Methods defined here:
  |  
- |  __init__(self, from_path='', to_path='', output_path='', file_filter=None, file_ignore=None)
+ |  __init__(self, from_path='', to_path='', output_path='', file_filter=None, file_ignore=None, quiet=False)
  |      create Juxta Object
  |  
  |  compare(self)
  |      compare folders and/or files
+ |  
+ |  compare_dir(self, dcmp=None)
+ |      recursive directory and file compare
+ |  
+ |  file_compare(self, from_file_path='', to_file_path='')
+ |      ndiff file compare
+ |  
+ |  write_comparison(self, name='', dcmp=None, compare_type='')
+ |      compare and write files
+```
+
+### Command Line Interface
+```sh
+usage: juxtapy [-h] [-f STR] [-t STR] [-o STR] [--file_filter STR]
+               [--file_ignore STR] [--q] [--version]
+
+Juxtapy
+
+Folder and File juxtaposing in Python
+
+optional arguments:
+  -h, --help                 show this help message and exit
+  -f STR, --from_path STR    from (left) directory or file path
+  -t STR, --to_path STR      to (right) directory or file path
+  -o STR, --output_path STR  output path
+  --file_filter STR          fnmatch file filter string (default: '*.pyc')
+  --file_ignore STR          comma separated files to ignore (default:
+                             '.DS_Store,.localized')
+  --q, --quiet               show no info
+  --version                  display the program's version
+
+happy comparing
 ```
 
 Tests
