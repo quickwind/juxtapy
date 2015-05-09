@@ -280,9 +280,12 @@ def read_file(file_path=''):
     """read a file into a string. assumes utf-8 encoding."""
     source = ''
     if os.path.exists(file_path) and os.path.isfile(file_path):
-        fid = codecs.open(file_path, 'r', 'utf-8')
-        source = fid.read()
-        fid.close()
+        try:
+            fid = codecs.open(file_path, 'r', 'utf-8')
+            source = fid.read()
+            fid.close()
+        except:
+            pass;
     return source
 
 def write_file(file_path='', data=''):
