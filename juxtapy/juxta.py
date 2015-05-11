@@ -280,18 +280,21 @@ def read_file(file_path=''):
     """read a file into a string. assumes utf-8 encoding."""
     source = ''
     if os.path.exists(file_path) and os.path.isfile(file_path):
+        fid = codecs.open(file_path, 'r', 'utf-8')
         try:
-            fid = codecs.open(file_path, 'r', 'utf-8')
             source = fid.read()
-            fid.close()
         except:
-            pass;
+            source = 'error: could not read file'
+        fid.close()
     return source
 
 def write_file(file_path='', data=''):
     """write a file from a string."""
     fid = codecs.open(file_path, 'w', 'utf-8')
-    fid.write(data)
+    try:
+        fid.write(data)
+    except:
+        fid.write('error: could not write file')
     fid.close()
 
 def common_root(left='', right=''):
