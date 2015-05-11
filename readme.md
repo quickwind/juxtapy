@@ -105,8 +105,8 @@ Todo
 * [ ] Nest Directory Tree
 * [ ] Add options:
     * [ ] skip comparing same files
-    * [ ] 
-* [ ]
+    * [ ] quiet run
+* [ ] 
 
 License
 -------
