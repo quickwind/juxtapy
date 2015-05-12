@@ -1,12 +1,10 @@
 """
 juxta.py
 
-
-
 project    : juxtapy
 version    : 0.1.0
 status     : development
-modifydate : 2015-05-11 05:39:00 -0700
+modifydate : 2015-05-11 18:58:00 -0700
 createdate : 2015-04-26 04:45:00 -0700
 website    : https://github.com/tmthydvnprt/juxtapy
 author     : tmthydvnprt
@@ -298,7 +296,7 @@ def read_file(file_path=''):
         fid = codecs.open(file_path, 'r', 'utf-8')
         try:
             source = fid.read()
-        except:
+        except UnicodeEncodeError:
             source = 'error: could not read file'
         fid.close()
     return source
@@ -308,7 +306,7 @@ def write_file(file_path='', data=''):
     fid = codecs.open(file_path, 'w', 'utf-8')
     try:
         fid.write(data)
-    except:
+    except UnicodeEncodeError:
         fid.write('error: could not write file')
     fid.close()
 
@@ -333,10 +331,19 @@ def write_index(path=''):
 class DirCmp(filecmp.dircmp):
     """filecmp.dircmp sublass to override phase3 to compare file content"""
 
-    def phase3(self): # Find out differences between common files, with shallow=False
+    def __init__(self, a, b, ignore=None, hide=None):
+        """override init"""
+        filecmp.dircmp.__init__(self, a, b, ignore, hide)
+        self.same_files = None
+        self.diff_files = None
+        self.funny_files = None
+
+    def phase3(self):
+        """ Find out differences between common files, with shallow=False """
         x = filecmp.cmpfiles(self.left, self.right, self.common_files, shallow=False)
         self.same_files, self.diff_files, self.funny_files = x
 
+    # override method map with custom phase3 function
     filecmp.dircmp.methodmap['same_files'] = phase3
     filecmp.dircmp.methodmap['diff_files'] = phase3
     filecmp.dircmp.methodmap['funny_files'] = phase3
@@ -370,9 +377,14 @@ class Juxta(object):
 
     def file_compare(self, from_file_path='', to_file_path=''):
         """ndiff file compare"""
+
+        # initialize comparison
         from_file = read_file(from_file_path).splitlines()
         to_file = read_file(to_file_path).splitlines()
         diff_html = difflib.HtmlDiff()
+
+        # override template strings
+        # pylint: disable=W0212
         diff_html._file_template = HTML.format(**{
             'tree'  : os.path.relpath(os.path.join(self.from_path, 'index.html'), os.path.dirname(from_file_path)),
             'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path)),
@@ -385,6 +397,7 @@ class Juxta(object):
         diff_html._table_template = TABLE
         diff_html._legend = LEGEND
 
+        # compare files
         file_diff_html = diff_html.make_file(from_file, to_file,
                                              os.path.basename(from_file_path),
                                              os.path.basename(to_file_path))
