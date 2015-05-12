@@ -1,3 +1,9 @@
+
+Juxtapy Testing Report
+2015-05-11 19:26:17 -0700
+=========================================
+
+Test Report
 test directory comparison passes ... ok
 test directory comparison fails ... ok
 test file comparison passes ... ok
@@ -6,12 +12,12 @@ test index.html ... ok
 
 Name            Stmts   Miss Branch BrMiss  Cover   Missing
 -----------------------------------------------------------
-juxtapy             2      0      0      0   100%   
-juxtapy.juxta     152      0     62     11    95%   
+juxtapy            11      0      0      0   100%   
+juxtapy.juxta     158      4     62     11    93%   302-303, 312-313
 tests               1      0      0      0   100%   
 tests.test         31      0      0      0   100%   
 -----------------------------------------------------------
-TOTAL             186      0     62     11    96%   
+TOTAL             201      4     62     11    94%   
 ----------------------------------------------------------------------
 Ran 5 tests in 0.019s
 

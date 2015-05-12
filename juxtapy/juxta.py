@@ -4,7 +4,7 @@ juxta.py
 project    : juxtapy
 version    : 0.1.0
 status     : development
-modifydate : 2015-05-11 19:04:00 -0700
+modifydate : 2015-05-11 19:26:00 -0700
 createdate : 2015-04-26 04:45:00 -0700
 website    : https://github.com/tmthydvnprt/juxtapy
 author     : tmthydvnprt
@@ -22,6 +22,9 @@ import shutil
 import fnmatch
 import filecmp
 import difflib
+
+# pylint: disable=W0212
+# pylint: disable=W0201
 
 # Constants
 SEP = os.path.sep
@@ -331,13 +334,6 @@ def write_index(path=''):
 class DirCmp(filecmp.dircmp):
     """filecmp.dircmp sublass to override phase3 to compare file content"""
 
-    def __init__(self, a, b, ignore=None, hide=None):
-        """override init"""
-        filecmp.dircmp.__init__(self, a, b, ignore, hide)
-        self.same_files = None
-        self.diff_files = None
-        self.funny_files = None
-
     def phase3(self):
         """ Find out differences between common files, with shallow=False """
         x = filecmp.cmpfiles(self.left, self.right, self.common_files, shallow=False)
@@ -384,7 +380,6 @@ class Juxta(object):
         diff_html = difflib.HtmlDiff()
 
         # override template strings
-        # pylint: disable=W0212
         diff_html._file_template = HTML.format(**{
             'tree'  : os.path.relpath(os.path.join(self.from_path, 'index.html'), os.path.dirname(from_file_path)),
             'title' : '{} | {}'.format(os.path.basename(from_file_path), os.path.basename(to_file_path)),
