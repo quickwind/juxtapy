@@ -1,11 +1,10 @@
 """
 juxtapy directory and file nose tests
 
-
 project    : juxtapy
 version    : 0.1.0
 status     : development
-modifydate : 2015-04-28 20:38:00 -0700
+modifydate : 2015-05-11 19:04:00 -0700
 createdate : 2015-04-26 08:54:00 -0700
 website    : https://github.com/tmthydvnprt/juxtapy
 author     : tmthydvnprt
