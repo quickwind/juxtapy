@@ -3,12 +3,10 @@ Juxtapy
 
 Folder and File juxtaposing in Python
 
-
-
 project    : juxtapy
 version    : 0.1.0
 status     : development
-modifydate : 2015-04-26 07:19:00 -0700
+modifydate : 2015-05-11 19:03:00 -0700
 createdate : 2015-04-26 04:45:00 -0700
 website    : https://github.com/tmthydvnprt/juxtapy
 author     : tmthydvnprt
@@ -23,7 +21,7 @@ credits    :
 __all__ = ['juxta']
 __version__ = '0.1.0'
 __status__ = 'development'
-__date__ = '2015-04-26 07:19:00 -0700'
+__date__ = '2015-05-11 19:03:00 -0700'
 __website__ = 'https://github.com/tmthydvnprt/juxtapy'
 __author__ = 'tmthydvnprt'
 __email__ = 'tmthydvnprt@users.noreply.github.com'

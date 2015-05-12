@@ -4,7 +4,7 @@ juxta.py
 project    : juxtapy
 version    : 0.1.0
 status     : development
-modifydate : 2015-05-11 18:58:00 -0700
+modifydate : 2015-05-11 19:02:00 -0700
 createdate : 2015-04-26 04:45:00 -0700
 website    : https://github.com/tmthydvnprt/juxtapy
 author     : tmthydvnprt
