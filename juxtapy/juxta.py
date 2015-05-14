@@ -189,8 +189,9 @@ STYLES = '''
         border-left: 0px!important;
         border-right: 0px!important;
     }
-    td[nowrap="nowrap"] {
+    td.nowrap {
         width:48%;
+        max-width:512px;
     }
     .diff td {
         padding:3px 6px!important;
@@ -270,19 +271,19 @@ INDEX_LEGEND = '''
 HEADER = '''<tr>
     <th class="diff_next"><br></th>
     <th class="diff_next"><br></th>
-    <th nowrap="nowrap" class="diff_header">{from}</th>
+    <th class="diff_header nowrap">{from}</th>
     <th class="diff_next"><br></th>
     <th class="diff_next"><br></th>
-    <th nowrap="nowrap" class="diff_header">{to}</th>
+    <th class="diff_header nowrap">{to}</th>
 </tr>
 '''
 ROW = '''<tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="{type}"><a href="{compare}">{from}</a></td>
+    <td class="{type} nowrap"><a href="{compare}">{from}</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="{type}"><a href="{compare}">{to}</a></td>
+    <td class="{type} nowrap"><a href="{compare}">{to}</a></td>
 </tr>
 '''
 TD = '''<li class="{}">{}</li>'''
@@ -396,7 +397,7 @@ class Juxta(object):
         file_diff_html = diff_html.make_file(from_file, to_file,
                                              os.path.basename(from_file_path),
                                              os.path.basename(to_file_path))
-        return file_diff_html
+        return file_diff_html.replace('nowrap="nowrap"', 'class="nowrap"')
 
     def compare(self):
         """compare folders and/or files"""
