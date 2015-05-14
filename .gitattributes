@@ -1,0 +1,3 @@
+# ignore documentation in repo
+tests/inputs/* linguist-documentation
+tests/outputs/* linguist-documentation
