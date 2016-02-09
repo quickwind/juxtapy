@@ -1,21 +1,21 @@
 Juxtapy
 =======
-Folder and File juxtaposing in Python
+Folder and File juxtaposing in Python. http://tmthydvnprt.github.io/juxtapy
 
 Description
 -----------
 
-This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` that generates an `html` site comparing two directory trees where files that differ contain links to their line-by-line comparisons. http://tmthydvnprt.github.io/juxtapy
+This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` that generates an `html` site comparing two directory trees where files that differ contain links to their line-by-line comparisons.
 
 ### Features
-* ignore specific files
-* filter out file types
+* Ignore specific files
+* Filter out file types
 * Five types of comparisons are captured:
-    * same path, same content (common, no change)
-    * same path, different content (common, change)
-    * similar path, different content (similar, change)
-    * from path only (subtractions)
-    * to path only (additions)
+    * Same path, same content (common, no change)
+    * Same path, different content (common, change)
+    * Similar path, different content (similar, change)
+    * From path only (subtractions)
+    * To path only (additions)
 * `difflib.HtmlDiff` is used to generate inter/intra line comparisons between two files.
 * `filecmp.dircmp` is used to create comparison between two directories
 * `difflib.get_close_matches` is used to find similar directory/file paths
@@ -106,7 +106,7 @@ Todo
 * [ ] Add options:
     * [ ] skip comparing same files
     * [ ] quiet run
-* [ ] 
+* [ ]
 
 License
 -------
