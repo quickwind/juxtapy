@@ -64,6 +64,9 @@
         margin-left:48px;
         text-transform: none;
     }
+    .breadcrumb > li + li::before {
+        padding: 0px 1px!important;
+    }
     .leftbreadcrumb {
         padding-right:0px;
     }
@@ -80,8 +83,9 @@
         border-left: 0px!important;
         border-right: 0px!important;
     }
-    td[nowrap="nowrap"] {
+    td.nowrap {
         width:48%;
+        max-width:512px;
     }
     .diff td {
         padding:3px 6px!important;
@@ -171,10 +175,10 @@
         <tr>
     <th class="diff_next"><br></th>
     <th class="diff_next"><br></th>
-    <th nowrap="nowrap" class="diff_header">from/</th>
+    <th class="diff_header nowrap">from</th>
     <th class="diff_next"><br></th>
     <th class="diff_next"><br></th>
-    <th nowrap="nowrap" class="diff_header">to/</th>
+    <th class="diff_header nowrap">to</th>
 </tr>
 
     </thead>
@@ -182,82 +186,82 @@
         <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="close_match_file.txt.html">close_match_file.txt</a></td>
+    <td class="diff_chg nowrap"><a href="close_match_file.txt.html">close_match_file.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="close_match_file.txt.html">close_mathc_file_.txt</a></td>
+    <td class="diff_chg nowrap"><a href="close_match_file.txt.html">close_mathc_file_.txt</a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="common_file.txt.html">common_file.txt</a></td>
+    <td class="diff_chg nowrap"><a href="common_file.txt.html">common_file.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="common_file.txt.html">common_file.txt</a></td>
+    <td class="diff_chg nowrap"><a href="common_file.txt.html">common_file.txt</a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class=""><a href="from.txt.html">from.txt</a></td>
+    <td class=" nowrap"><a href="from.txt.html">from.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class=""><a href="from.txt.html">from.txt</a></td>
+    <td class=" nowrap"><a href="from.txt.html">from.txt</a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_sub"><a href="only_in_from.txt.html">only_in_from.txt</a></td>
+    <td class="diff_sub nowrap"><a href="only_in_from.txt.html">only_in_from.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_sub"><a href="only_in_from.txt.html"></a></td>
+    <td class="diff_sub nowrap"><a href="only_in_from.txt.html"></a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="sub_common/diff.txt.html">sub_common/diff.txt</a></td>
+    <td class="diff_chg nowrap"><a href="sub_common/diff.txt.html">sub_common/diff.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="sub_common/diff.txt.html">sub_common/diff.txt</a></td>
+    <td class="diff_chg nowrap"><a href="sub_common/diff.txt.html">sub_common/diff.txt</a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class=""><a href="sub_common/same.txt.html">sub_common/same.txt</a></td>
+    <td class=" nowrap"><a href="sub_common/same.txt.html">sub_common/same.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class=""><a href="sub_common/same.txt.html">sub_common/same.txt</a></td>
+    <td class=" nowrap"><a href="sub_common/same.txt.html">sub_common/same.txt</a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="sub_from/sub_common.txt.html">sub_from/sub_common.txt</a></td>
+    <td class="diff_chg nowrap"><a href="sub_from/sub_common.txt.html">sub_from/sub_common.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_chg"><a href="sub_from/sub_common.txt.html">sub_to/sub_common.txt</a></td>
+    <td class="diff_chg nowrap"><a href="sub_from/sub_common.txt.html">sub_to/sub_common.txt</a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class=""><a href="to.txt.html">to.txt</a></td>
+    <td class=" nowrap"><a href="to.txt.html">to.txt</a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class=""><a href="to.txt.html">to.txt</a></td>
+    <td class=" nowrap"><a href="to.txt.html">to.txt</a></td>
 </tr>
 
 <tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_add"><a href="unique_to_to.txt.html"></a></td>
+    <td class="diff_add nowrap"><a href="unique_to_to.txt.html"></a></td>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
-    <td nowrap="nowrap" class="diff_add"><a href="unique_to_to.txt.html">unique_to_to.txt</a></td>
+    <td class="diff_add nowrap"><a href="unique_to_to.txt.html">unique_to_to.txt</a></td>
 </tr>
 
     </tbody>

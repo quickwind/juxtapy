@@ -64,7 +64,7 @@ def parse_args(args):
         help="comma separated files to ignore (default: '.DS_Store,.localized')"
     )
     parser.add_argument(
-        "--q", "--quiet",
+        "-q", "--quiet",
         action="store_true",
         help="show no info"
     )

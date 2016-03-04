@@ -64,6 +64,9 @@
         margin-left:48px;
         text-transform: none;
     }
+    .breadcrumb > li + li::before {
+        padding: 0px 1px!important;
+    }
     .leftbreadcrumb {
         padding-right:0px;
     }
@@ -80,8 +83,9 @@
         border-left: 0px!important;
         border-right: 0px!important;
     }
-    td[nowrap="nowrap"] {
+    td.nowrap {
         width:48%;
+        max-width:512px;
     }
     .diff td {
         padding:3px 6px!important;
@@ -173,7 +177,7 @@
         <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header"></th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">unique_to_to.txt</th></tr></thead>
     </thead>
     <tbody>
-                    <tr><td class="diff_next" id="difflib_chg_to8__0"><a href="#difflib_chg_to8__top">t</a></td><td class="diff_header"></td><td nowrap="nowrap"></td><td class="diff_next"><a href="#difflib_chg_to8__top">t</a></td><td class="diff_header" id="to8_1">1</td><td nowrap="nowrap"><span class="diff_add">only&nbsp;here&nbsp;now</span></td></tr>
+                    <tr><td class="diff_next" id="difflib_chg_to8__0"><a href="#difflib_chg_to8__top">t</a></td><td class="diff_header"></td><td class="nowrap"></td><td class="diff_next"><a href="#difflib_chg_to8__top">t</a></td><td class="diff_header" id="to8_1">1</td><td class="nowrap"><span class="diff_add">only&nbsp;here&nbsp;now</span></td></tr>
 
     </tbody>
 </table>

@@ -64,6 +64,9 @@
         margin-left:48px;
         text-transform: none;
     }
+    .breadcrumb > li + li::before {
+        padding: 0px 1px!important;
+    }
     .leftbreadcrumb {
         padding-right:0px;
     }
@@ -80,8 +83,9 @@
         border-left: 0px!important;
         border-right: 0px!important;
     }
-    td[nowrap="nowrap"] {
+    td.nowrap {
         width:48%;
+        max-width:512px;
     }
     .diff td {
         padding:3px 6px!important;
@@ -173,11 +177,11 @@
         <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">to.txt</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">to.txt</th></tr></thead>
     </thead>
     <tbody>
-                    <tr><td class="diff_next"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="from0_1">1</td><td nowrap="nowrap">to.txt</td><td class="diff_next"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="to0_1">1</td><td nowrap="nowrap">to.txt</td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from0_2">2</td><td nowrap="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to0_2">2</td><td nowrap="nowrap"></td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from0_3">3</td><td nowrap="nowrap">this&nbsp;file&nbsp;has&nbsp;changed</td><td class="diff_next"></td><td class="diff_header" id="to0_3">3</td><td nowrap="nowrap">this&nbsp;file&nbsp;has&nbsp;changed</td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from0_4">4</td><td nowrap="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to0_4">4</td><td nowrap="nowrap"></td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from0_5">5</td><td nowrap="nowrap">end</td><td class="diff_next"></td><td class="diff_header" id="to0_5">5</td><td nowrap="nowrap">end</td></tr>
+                    <tr><td class="diff_next"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="from0_1">1</td><td class="nowrap">to.txt</td><td class="diff_next"><a href="#difflib_chg_to0__top">t</a></td><td class="diff_header" id="to0_1">1</td><td class="nowrap">to.txt</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from0_2">2</td><td class="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to0_2">2</td><td class="nowrap"></td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from0_3">3</td><td class="nowrap">this&nbsp;file&nbsp;has&nbsp;changed</td><td class="diff_next"></td><td class="diff_header" id="to0_3">3</td><td class="nowrap">this&nbsp;file&nbsp;has&nbsp;changed</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from0_4">4</td><td class="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to0_4">4</td><td class="nowrap"></td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from0_5">5</td><td class="nowrap">end</td><td class="diff_next"></td><td class="diff_header" id="to0_5">5</td><td class="nowrap">end</td></tr>
 
     </tbody>
 </table>

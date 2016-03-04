@@ -64,6 +64,9 @@
         margin-left:48px;
         text-transform: none;
     }
+    .breadcrumb > li + li::before {
+        padding: 0px 1px!important;
+    }
     .leftbreadcrumb {
         padding-right:0px;
     }
@@ -80,8 +83,9 @@
         border-left: 0px!important;
         border-right: 0px!important;
     }
-    td[nowrap="nowrap"] {
+    td.nowrap {
         width:48%;
+        max-width:512px;
     }
     .diff td {
         padding:3px 6px!important;
@@ -173,11 +177,11 @@
         <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">from.txt</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">from.txt</th></tr></thead>
     </thead>
     <tbody>
-                    <tr><td class="diff_next"><a href="#difflib_chg_to1__top">t</a></td><td class="diff_header" id="from1_1">1</td><td nowrap="nowrap">from.txt</td><td class="diff_next"><a href="#difflib_chg_to1__top">t</a></td><td class="diff_header" id="to1_1">1</td><td nowrap="nowrap">from.txt</td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from1_2">2</td><td nowrap="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to1_2">2</td><td nowrap="nowrap"></td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from1_3">3</td><td nowrap="nowrap">this&nbsp;file&nbsp;will&nbsp;change</td><td class="diff_next"></td><td class="diff_header" id="to1_3">3</td><td nowrap="nowrap">this&nbsp;file&nbsp;will&nbsp;change</td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from1_4">4</td><td nowrap="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to1_4">4</td><td nowrap="nowrap"></td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from1_5">5</td><td nowrap="nowrap">end</td><td class="diff_next"></td><td class="diff_header" id="to1_5">5</td><td nowrap="nowrap">end</td></tr>
+                    <tr><td class="diff_next"><a href="#difflib_chg_to1__top">t</a></td><td class="diff_header" id="from1_1">1</td><td class="nowrap">from.txt</td><td class="diff_next"><a href="#difflib_chg_to1__top">t</a></td><td class="diff_header" id="to1_1">1</td><td class="nowrap">from.txt</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from1_2">2</td><td class="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to1_2">2</td><td class="nowrap"></td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from1_3">3</td><td class="nowrap">this&nbsp;file&nbsp;will&nbsp;change</td><td class="diff_next"></td><td class="diff_header" id="to1_3">3</td><td class="nowrap">this&nbsp;file&nbsp;will&nbsp;change</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from1_4">4</td><td class="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to1_4">4</td><td class="nowrap"></td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from1_5">5</td><td class="nowrap">end</td><td class="diff_next"></td><td class="diff_header" id="to1_5">5</td><td class="nowrap">end</td></tr>
 
     </tbody>
 </table>

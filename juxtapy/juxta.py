@@ -173,6 +173,9 @@ STYLES = '''
         margin-left:48px;
         text-transform: none;
     }
+    .breadcrumb > li + li::before {
+        padding: 0px 1px!important;
+    }
     .leftbreadcrumb {
         padding-right:0px;
     }
@@ -300,7 +303,7 @@ def read_file(file_path=''):
         fid = codecs.open(file_path, 'r', 'utf-8')
         try:
             source = fid.read()
-        except UnicodeEncodeError:
+        except (UnicodeEncodeError, UnicodeDecodeError):
             source = 'error: could not read file'
         fid.close()
     return source
@@ -310,7 +313,7 @@ def write_file(file_path='', data=''):
     fid = codecs.open(file_path, 'w', 'utf-8')
     try:
         fid.write(data)
-    except UnicodeEncodeError:
+    except (UnicodeEncodeError, UnicodeDecodeError):
         fid.write('error: could not write file')
     fid.close()
 
@@ -403,6 +406,7 @@ class Juxta(object):
         """compare folders and/or files"""
 
         if self.compare_type == 'dir':
+            root = common_root(self.from_path, self.to_path)
             # check and clear output directory
             if os.path.exists(self.output_path):
                 shutil.rmtree(self.output_path)
@@ -411,8 +415,12 @@ class Juxta(object):
             dcmp = DirCmp(self.from_path, self.to_path, self.file_ignore)
             compare = self.compare_dir(dcmp)
             compare = sorted(compare, key=lambda x: x["from"] or x["to"])
+            for item in compare:
+                item['from'] = item['from'].replace(self.from_path, '')
+                item['to'] = item['to'].replace(self.to_path, '')
             file_rows = [ROW.format(**x) for x in compare]
-            root = common_root(self.from_path, self.to_path) + SEP
+            if not root.endswith('/'):
+                root = root + SEP
             html = HTML.format(**{
                 'tree'  : '#',
                 'title' : '{}/ | {}/'.format(os.path.basename(self.from_path), os.path.basename(self.to_path)),
@@ -423,8 +431,8 @@ class Juxta(object):
             })
             table = TABLE % ({
                 'header_row' : HEADER.format(**{
-                    'from' : self.from_path.replace(root, '') + SEP,
-                    'to' : self.to_path.replace(root, '') + SEP,
+                    'from' : self.from_path.replace(root, ''),
+                    'to' : self.to_path.replace(root, ''),
                 }),
                 'data_rows' : '\n'.join(file_rows),
                 'prefix' : '',
@@ -437,7 +445,7 @@ class Juxta(object):
             # write
             write_file(os.path.join(self.output_path, 'index.html'), compare_html)
 
-            return 'COMPARED: {}'.format(self.output_path)
+            return 'COMPARED: file://{}'.format(os.path.join(self.output_path, 'index.html'))
 
         elif self.compare_type == 'file':
             # compare file

@@ -64,6 +64,9 @@
         margin-left:48px;
         text-transform: none;
     }
+    .breadcrumb > li + li::before {
+        padding: 0px 1px!important;
+    }
     .leftbreadcrumb {
         padding-right:0px;
     }
@@ -80,8 +83,9 @@
         border-left: 0px!important;
         border-right: 0px!important;
     }
-    td[nowrap="nowrap"] {
+    td.nowrap {
         width:48%;
+        max-width:512px;
     }
     .diff td {
         padding:3px 6px!important;
@@ -173,11 +177,11 @@
         <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">common_file.txt</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">common_file.txt</th></tr></thead>
     </thead>
     <tbody>
-                    <tr><td class="diff_next" id="difflib_chg_to2__0"><a href="#difflib_chg_to2__0">f</a></td><td class="diff_header" id="from2_1">1</td><td nowrap="nowrap">common_file.txt</td><td class="diff_next"><a href="#difflib_chg_to2__0">f</a></td><td class="diff_header" id="to2_1">1</td><td nowrap="nowrap">common_file.txt</td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from2_2">2</td><td nowrap="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to2_2">2</td><td nowrap="nowrap"></td></tr>
-            <tr><td class="diff_next"><a href="#difflib_chg_to2__top">t</a></td><td class="diff_header" id="from2_3">3</td><td nowrap="nowrap">This&nbsp;file&nbsp;is&nbsp;commone&nbsp;to&nbsp;both&nbsp;the&nbsp;from<span class="diff_sub">&nbsp;and&nbsp;to</span>&nbsp;directories</td><td class="diff_next"><a href="#difflib_chg_to2__top">t</a></td><td class="diff_header" id="to2_3">3</td><td nowrap="nowrap">This&nbsp;file&nbsp;is&nbsp;commone&nbsp;to&nbsp;both&nbsp;the<span class="diff_add">&nbsp;to&nbsp;and</span>&nbsp;from&nbsp;directories</td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from2_4">4</td><td nowrap="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to2_4">4</td><td nowrap="nowrap"></td></tr>
-            <tr><td class="diff_next"></td><td class="diff_header" id="from2_5">5</td><td nowrap="nowrap">*almost&nbsp;common*</td><td class="diff_next"></td><td class="diff_header" id="to2_5">5</td><td nowrap="nowrap">*almost&nbsp;common*</td></tr>
+                    <tr><td class="diff_next" id="difflib_chg_to2__0"><a href="#difflib_chg_to2__0">f</a></td><td class="diff_header" id="from2_1">1</td><td class="nowrap">common_file.txt</td><td class="diff_next"><a href="#difflib_chg_to2__0">f</a></td><td class="diff_header" id="to2_1">1</td><td class="nowrap">common_file.txt</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from2_2">2</td><td class="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to2_2">2</td><td class="nowrap"></td></tr>
+            <tr><td class="diff_next"><a href="#difflib_chg_to2__top">t</a></td><td class="diff_header" id="from2_3">3</td><td class="nowrap">This&nbsp;file&nbsp;is&nbsp;commone&nbsp;to&nbsp;both&nbsp;the&nbsp;from<span class="diff_sub">&nbsp;and&nbsp;to</span>&nbsp;directories</td><td class="diff_next"><a href="#difflib_chg_to2__top">t</a></td><td class="diff_header" id="to2_3">3</td><td class="nowrap">This&nbsp;file&nbsp;is&nbsp;commone&nbsp;to&nbsp;both&nbsp;the<span class="diff_add">&nbsp;to&nbsp;and</span>&nbsp;from&nbsp;directories</td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from2_4">4</td><td class="nowrap"></td><td class="diff_next"></td><td class="diff_header" id="to2_4">4</td><td class="nowrap"></td></tr>
+            <tr><td class="diff_next"></td><td class="diff_header" id="from2_5">5</td><td class="nowrap">*almost&nbsp;common*</td><td class="diff_next"></td><td class="diff_header" id="to2_5">5</td><td class="nowrap">*almost&nbsp;common*</td></tr>
 
     </tbody>
 </table>

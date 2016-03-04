@@ -64,6 +64,9 @@
         margin-left:48px;
         text-transform: none;
     }
+    .breadcrumb > li + li::before {
+        padding: 0px 1px!important;
+    }
     .leftbreadcrumb {
         padding-right:0px;
     }
@@ -80,8 +83,9 @@
         border-left: 0px!important;
         border-right: 0px!important;
     }
-    td[nowrap="nowrap"] {
+    td.nowrap {
         width:48%;
+        max-width:512px;
     }
     .diff td {
         padding:3px 6px!important;
@@ -175,7 +179,7 @@
         <thead><tr><th class="diff_next"><br /></th><th colspan="2" class="diff_header">diff.txt</th><th class="diff_next"><br /></th><th colspan="2" class="diff_header">diff.txt</th></tr></thead>
     </thead>
     <tbody>
-                    <tr><td class="diff_next" id="difflib_chg_to4__0"><a href="#difflib_chg_to4__top">t</a></td><td class="diff_header" id="from4_1">1</td><td nowrap="nowrap">this&nbsp;is&nbsp;a&nbsp;<span class="diff_chg">sort</span>a&nbsp;similar&nbsp;file</td><td class="diff_next"><a href="#difflib_chg_to4__top">t</a></td><td class="diff_header" id="to4_1">1</td><td nowrap="nowrap">this&nbsp;is&nbsp;a&nbsp;<span class="diff_chg">kind</span>a&nbsp;similar&nbsp;file</td></tr>
+                    <tr><td class="diff_next" id="difflib_chg_to4__0"><a href="#difflib_chg_to4__top">t</a></td><td class="diff_header" id="from4_1">1</td><td class="nowrap">this&nbsp;is&nbsp;a&nbsp;<span class="diff_chg">sort</span>a&nbsp;similar&nbsp;file</td><td class="diff_next"><a href="#difflib_chg_to4__top">t</a></td><td class="diff_header" id="to4_1">1</td><td class="nowrap">this&nbsp;is&nbsp;a&nbsp;<span class="diff_chg">kind</span>a&nbsp;similar&nbsp;file</td></tr>
 
     </tbody>
 </table>
