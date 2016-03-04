@@ -371,6 +371,8 @@ class Juxta(object):
             self.compare_type = 'error'
 
         # set output based on type
+        if not output_path:
+            output_path = os.path.dirname(from_path)
         self.output_path = os.path.join(output_path, self.compare_name)
         if self.compare_type == 'file':
             self.output_path += '.html'
