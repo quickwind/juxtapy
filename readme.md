@@ -23,6 +23,12 @@ This program is a wrapper for python's `difflib.HtmlDiff` & `filecmp.dircmp` tha
 Code Examples
 -------------
 
+### iPython Magic Interface
+
+Place the `magic_juxtapy.py` file in the `startup/` directory of you iPython's profile. (e.g. `~/.ipython/profile_default/startup/`)
+
+    In [1]: %juxtapy path/to/fromfile path/to/tofile
+
 ### Module Interface
 
 ```python
