@@ -79,6 +79,8 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.venv/
+.idea/
 env/
 build/
 develop-eggs/

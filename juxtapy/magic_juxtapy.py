@@ -13,6 +13,7 @@ Example:
 import subprocess
 from IPython.core.magic import register_line_magic
 
+
 @register_line_magic
 def juxtapy(line):
     """Folder and File juxtaposing in Python"""
@@ -21,4 +22,4 @@ def juxtapy(line):
     to_loc = args[1]
     py_loc = args[2] if len(args) > 2 else '~/GitHub/juxtapy/juxtapy'
     cmd = 'python {} -f {} -t {}'.format(py_loc, from_loc, to_loc)
-    print subprocess.check_output(cmd, shell=True)
+    print(subprocess.check_output(cmd, shell=True))

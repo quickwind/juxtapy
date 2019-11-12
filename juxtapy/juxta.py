@@ -17,11 +17,13 @@ credits    :
 """
 
 import os
+import json
 import codecs
 import shutil
 import fnmatch
 import filecmp
 import difflib
+import xml
 
 # pylint: disable=W0212
 # pylint: disable=W0201
@@ -40,7 +42,7 @@ HTML = '''<!DOCTYPE html>
         <title>{title}</title>
 
         <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
-        <link href="https://bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
             %(styles)s
         </style>
@@ -48,15 +50,8 @@ HTML = '''<!DOCTYPE html>
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="http://tmthydvnprt.github.io/juxtapy">Juxtapy</a>
-                </div>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="{tree}">Directory Tree</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="https://github.com/tmthydvnprt/juxtapy">Source</a></li>
-                    <li><a href="https://github.com/tmthydvnprt/juxtapy#juxtapy">Help</a></li>
                 </ul>
             </div>
         </nav>
@@ -113,12 +108,6 @@ HOME_PAGE = '''<div class="jumbotron text-center">
             <a class="btn btn btn-success" href="from.txt_compare_to.txt.html" role="button">Example<br>File Output</a>
         </div>
     </div>
-    <footer class="footer">
-        <div class="container">
-            <hr>
-            <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
-        </div>
-    </footer>
 </div>
 '''
 STYLES = '''
@@ -242,34 +231,8 @@ TABLE = '''
 </table>
 '''
 LEGEND = '''
-<footer class="footer">
-    <div class="container">
-        <hr>
-        <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
-        <p class="pull-right legend">
-            <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
-            <span class="label label-default diff_chg">Changed</span>
-            <span class="label label-default diff_sub">Deleted</span>
-            <br class="visible-xs">
-            <span class="label label-info">(f)irst change</span>
-            <span class="label label-info">(n)ext change</span>
-            <span class="label label-info">(t)op</span>
-        </p>
-    </div>
-</footer>
 '''
 INDEX_LEGEND = '''
-<footer class="footer">
-    <div class="container">
-        <hr>
-        <p class="text-muted pull-left">&copy; 2014-2015 <a href="https://github.com/tmthydvnprt">tmthydvnprt</a></p>
-        <p class="pull-right">
-            <span class="label label-default diff_add">&nbsp;Added&nbsp;</span>
-            <span class="label label-default diff_chg">Changed</span>
-            <span class="label label-default diff_sub">Deleted</span>
-        </p>
-    </div>
-</footer>
 '''
 HEADER = '''<tr>
     <th class="diff_next"><br></th>
@@ -284,7 +247,7 @@ ROW = '''<tr>
     <td class="diff_next"><br></td>
     <td class="diff_next"><br></td>
     <td class="{type} nowrap"><a href="{compare}">{from}</a></td>
-    <td class="diff_next"><br></td>
+    <td class="diff_next"><br><b>{result}</b></td>
     <td class="diff_next"><br></td>
     <td class="{type} nowrap"><a href="{compare}">{to}</a></td>
 </tr>
@@ -306,6 +269,19 @@ def read_file(file_path=''):
         except (UnicodeEncodeError, UnicodeDecodeError):
             source = 'error: could not read file'
         fid.close()
+    _, file_extension = os.path.splitext(os.path.basename(file_path))
+    if file_extension.lower() == '.json':
+        try:
+            parsed = json.loads(source)
+            source = json.dumps(parsed, indent=2, sort_keys=True)
+        except Exception:
+            print('Failed to beautify JSON file: {}'.format(file_path))
+    elif file_extension.lower() == '.xml' and source.count('\n') <= 2:
+        try:
+            dom = xml.dom.minidom.parse(source)
+            source = dom.toprettyxml()
+        except Exception:
+            print('Failed to beautify XML file: {}'.format(file_path))
     return source
 
 def write_file(file_path='', data=''):
@@ -323,7 +299,7 @@ def common_root(left='', right=''):
 
 def make_breadcrumb(path=''):
     """make bootstrap breadcrumb list from file path"""
-    return '\n'.join([TD.format('active' if i == len(path.split(SEP))-1 else '', x) for i, x in enumerate(path.split(SEP))])
+    return '\n'.join([TD.format('active' if i == len(path.split(SEP))-1 else '', x if i == len(path.split(SEP))-1 else (x + SEP)) for i, x in enumerate(path.split(SEP))])
 
 def write_index(path=''):
     """write home page"""
@@ -471,19 +447,26 @@ class Juxta(object):
         if not os.path.exists(to_file_path):
             to_file_path = os.path.join(os.path.dirname(to_file_path), '')
 
-        compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name) + '.html'
-        # compare
-        file_compare_html = self.file_compare(from_file_path, to_file_path)
-        # write
-        if not os.path.exists(os.path.dirname(compare_file_path)):
-            os.makedirs(os.path.dirname(compare_file_path))
-        write_file(compare_file_path, file_compare_html)
+        if compare_type:
+            compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name) + '.html'
+
+            # compare
+            file_compare_html = self.file_compare(from_file_path, to_file_path)
+            # write
+            if not os.path.exists(os.path.dirname(compare_file_path)):
+                os.makedirs(os.path.dirname(compare_file_path))
+            write_file(compare_file_path, file_compare_html)
+        else:
+            compare_file_path = os.path.join(dcmp.left.replace(self.from_path, self.output_path), name)
+            os.makedirs(os.path.dirname(compare_file_path), exist_ok=True)
+            shutil.copy(from_file_path, compare_file_path)
 
         diff = {
             'type'   : compare_type,
             'from'   : os.path.join(dcmp.left, name).replace(self.from_path+SEP, ''),
             'to'     : os.path.join(dcmp.right, name).replace(self.to_path+SEP, ''),
-            'compare': compare_file_path.replace(self.output_path+SEP, '')
+            'compare': compare_file_path.replace(self.output_path+SEP, ''),
+            'result' : '&ne;' if compare_type else '='
         }
         return diff
 
@@ -496,14 +479,14 @@ class Juxta(object):
         for name in dcmp.same_files:
             if not fnmatch.fnmatch(name, self.file_filter):
                 if not self.quiet:
-                    print 'same ', name
+                    print('same ', name)
                 diffs.append(self.write_comparison(name, dcmp))
 
         # compare different files
         for name in dcmp.diff_files:
             if not fnmatch.fnmatch(name, self.file_filter):
                 if not self.quiet:
-                    print 'diff ', name
+                    print('diff ', name)
                 diffs.append(self.write_comparison(name, dcmp, 'diff_chg'))
 
         # compare common subdirectories
@@ -530,7 +513,7 @@ class Juxta(object):
         for from_file_path, to_file_path in close_files:
             if not fnmatch.fnmatch(from_file_path, self.file_filter):
                 if not self.quiet:
-                    print 'close', os.path.basename(from_file_path), os.path.basename(to_file_path)
+                    print('close', os.path.basename(from_file_path), os.path.basename(to_file_path))
 
                 # paths
                 compare_file_path = from_file_path.replace(self.from_path, self.output_path) + '.html'
@@ -540,7 +523,8 @@ class Juxta(object):
                     'type'   : 'diff_chg',
                     'from'   : from_file_path.replace(self.from_path+SEP, ''),
                     'to'     : to_file_path.replace(self.to_path+SEP, ''),
-                    'compare': compare_file_path.replace(self.output_path+SEP, '')
+                    'compare': compare_file_path.replace(self.output_path+SEP, ''),
+                    'result' : '&ne;' #'&asymp;'
                 })
                 # write
                 write_file(compare_file_path, file_compare_html)
@@ -549,7 +533,7 @@ class Juxta(object):
         for no_match in list_diff(dcmp.left_only, [os.path.basename(x[0]) for x in close_files+close_dirs]):
             if not fnmatch.fnmatch(no_match, self.file_filter):
                 if not self.quiet:
-                    print 'left ', no_match
+                    print('left ', no_match)
 
                 fromdiff = self.write_comparison(no_match, dcmp, 'diff_sub')
                 fromdiff['to'] = ''
@@ -558,7 +542,7 @@ class Juxta(object):
         for no_match in list_diff(dcmp.right_only, [os.path.basename(x[1]) for x in close_files+close_dirs]):
             if not fnmatch.fnmatch(no_match, self.file_filter):
                 if not self.quiet:
-                    print 'right', no_match
+                    print('right', no_match)
 
                 todiff = self.write_comparison(no_match, dcmp, 'diff_add')
                 todiff['from'] = ''
